@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+final class Version20260111192902 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return 'Creating the basic schema of User data.';
+    }
+
+    public function up(Schema $schema): void
+    {
+        $this->addSql('CREATE TABLE user (' .
+        'id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, ' .
+        'salutation VARCHAR(64) DEFAULT NULL, ' .
+        'pronouns VARCHAR(64) DEFAULT NULL, ' .
+        'gender_identity VARCHAR(64) DEFAULT NULL, ' .
+        'first_name VARCHAR(128) NOT NULL, ' .
+        'middle_name VARCHAR(128) DEFAULT NULL, ' .
+        'last_name VARCHAR(128) NOT NULL)');
+    }
+
+    public function down(Schema $schema): void
+    {
+        $this->addSql('DROP TABLE user');
+    }
+}

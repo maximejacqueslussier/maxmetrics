@@ -1,0 +1,33 @@
+app:
+    application:
+        createUser:
+            validationFailed: User creation validation failed.
+        updateUser:
+            userNotFoundException: 'User not found for id: {{ id }}'
+            validationFailed: User update validation failed.
+    entity:
+        user:
+            salutation:
+                maxMessage: Your salutation title is too long. It should have {{ limit }} characters or less.
+            pronouns:
+                maxMessage: Your pronouns are too long. They should have {{ limit }} characters or less.
+            genderIdentity:
+                maxMessage: Your gender identity is too long. It should have {{ limit }} characters or less.
+            firstName:
+                notBlankMessage: Your first name should not be blank.
+                maxMessage: Your first name is too long. It should have {{ limit }} characters or less.
+            middleName:
+                maxMessage: Your middle name is too long. It should have {{ limit }} characters or less.
+            lastName:
+                notBlankMessage: Your last name should not be blank.
+                maxMessage: Your last name is too long. It should have {{ limit }} characters or less.
+            email:
+                notBlankMessage: Your email address should not be blank.
+                maxMessage: Your email address is too long. It should have {{ limit }} characters or less.
+                emailMessage: Your email address {{ value }} is not a valid email.
+                uniqueEntityMessage: This email address {{ value }} is already used.
+            phoneNumber:
+                maxMessage: Your phone number is too long. It should have {{ limit }} characters or less.
+            password:
+                maxMessage: Your password is too long. It should have {{ limit }} characters or less.
+                passwordStrengthMessage: Your password is too weak. Please use a stronger password.
