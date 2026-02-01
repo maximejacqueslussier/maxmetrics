@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
-use App\Entity\User;
+use App\Domain\User\User;
 
 /**
  * Represents the GraphQL result for the updateUser mutation.
@@ -12,7 +12,7 @@ use App\Entity\User;
 final readonly class UpdateUserResult
 {
     /**
-     * @param \App\Entity\User $user,
+     * @param \App\Domain\User\User $user,
      * @param string[] $changedFields
      */
     public function __construct(
@@ -24,7 +24,7 @@ final readonly class UpdateUserResult
     /**
      * Get the User entity.
      *
-     * @return \App\Entity\User $user
+     * @return \App\Domain\User\User $user
      */
     public function getUser(): User
     {

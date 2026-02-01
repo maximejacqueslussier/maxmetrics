@@ -1,0 +1,131 @@
+export default function UserForm({ mode, initialValues = {}, errors = {}, onSubmit }) {
+    return (
+        <>
+            <p>Fields marked with * are required.</p>
+            {Object.keys(errors).length > 0 && (
+                <p role="alert">Please fix the errors below.</p>
+            )}
+            <form onSubmit={onSubmit}>
+                <fieldset>
+                    <legend>Name</legend>
+                    
+                    <label htmlFor="salutation">Salutation</label>
+                    <input type="text"
+                           id="salutation"
+                           name="salutation"
+                           aria-invalid={errors.salutation ? 'true' : undefined}
+                           aria-describedby={errors.salutation ? 'salutationError' : undefined}
+                           autoComplete="honoric-prefix"
+                           maxLength="64"
+                           defaultValue={initialValues.salutation} />
+                    {errors.salutation && (
+                        <p id="salutationError">{errors.salutation}</p>
+                    )}
+                    
+                    <label htmlFor="firstName">First name <span aria-hidden="true">*</span></label>
+                    <input type="text"
+                           id="firstName"
+                           name="firstName"
+                           aria-invalid={errors.firstName ? 'true' : undefined}
+                           aria-describedby={errors.firstName ? 'firstNameError' : undefined}
+                           autoComplete="given-name"
+                           required
+                           maxLength="128"
+                           defaultValue={initialValues.firstName} />
+                    {errors.firstName && (
+                        <p id="firstNameError">{errors.firstName}</p>
+                    )}
+                    
+                    <label htmlFor="middleName">Middle name</label>
+                    <input type="text"
+                           id="middleName"
+                           name="middleName"
+                           aria-invalid={errors.middleName ? 'true' : undefined}
+                           aria-describedby={errors.middleName ? 'middleNameError' : undefined}
+                           autoComplete="additional-name"
+                           maxLength="128"
+                           defaultValue={initialValues.middleName} />
+                    {errors.middleName && (
+                        <p id="middleNameError">{errors.middleName}</p>
+                    )}
+                    
+                    <label htmlFor="lastName">Last name <span aria-hidden="true">*</span></label>
+                    <input type="text"
+                           id="lastName"
+                           name="lastName"
+                           aria-invalid={errors.lastName ? 'true' : undefined}
+                           aria-describedby={errors.lastName ? 'lastNameError' : undefined}
+                           autoComplete="family-name"
+                           required
+                           maxLength="128"
+                           defaultValue={initialValues.lastName} />
+                    {errors.lastName && (
+                        <p id="lastNameError">{errors.lastName}</p>
+                    )}
+                </fieldset>
+                <fieldset>
+                    <legend>Identity</legend>
+                    
+                    <label htmlFor="pronouns">Pronouns</label>
+                    <input type="text"
+                           id="pronouns"
+                           name="pronouns"
+                           aria-invalid={errors.pronouns ? 'true' : undefined}
+                           aria-describedby={errors.pronouns ? 'pronounsError' : undefined}
+                           maxLength="64"
+                           defaultValue={initialValues.pronouns} />
+                    {errors.pronouns && (
+                        <p id="pronounsError">{errors.pronouns}</p>
+                    )}
+                    
+                    <label htmlFor="genderIdentity">Gender Identity</label>
+                    <input type="text"
+                           id="genderIdentity"
+                           name="genderIdentity"
+                           aria-invalid={errors.genderIdentity ? 'true' : undefined}
+                           aria-describedby={errors.genderIdentity ? 'genderIdentityError' : undefined}
+                           maxLength="64"
+                           defaultValue={initialValues.genderIdentity} />
+                    {errors.genderIdentity && (
+                        <p id="genderIdentityError">{errors.genderIdentity}</p>
+                    )}
+                </fieldset>
+                <fieldset>
+                    <legend>Contact</legend>
+                    
+                    <label htmlFor="email">Email address <span aria-hidden="true">*</span></label>
+                    <input type="email" 
+                           id="email"
+                           name="email"
+                           aria-invalid={errors.email ? 'true' : undefined}
+                           aria-describedby={errors.email ? 'emailError' : undefined}
+                           autoComplete="email"
+                           required
+                           maxLength="256"
+                           defaultValue={initialValues.email} />
+                    {errors.email && (
+                        <p id="emailError">{errors.email}</p>
+                    )}
+                    
+                    <label htmlFor="phoneNumber">Phone number</label>
+                    <input type="tel"
+                           id="phoneNumber"
+                           name="phoneNumber"
+                           aria-invalid={errors.phoneNumber ? 'true' : undefined}
+                           aria-describedby={errors.phoneNumber ? 'phoneNumberError' : undefined}
+                           autoComplete="tel"
+                           maxLength="64"
+                           defaultValue={initialValues.phoneNumber} />
+                    {errors.phoneNumber && (
+                        <p id="phoneNumberError">{errors.phoneNumber}</p>
+                    )}
+                </fieldset>
+                
+                <button type="submit">
+                    {mode === 'edit' ? 'Save changes' : 'Add new user'}
+                </button>
+                <button type="reset">Reset</button>
+            </form>
+        </>
+    )
+}

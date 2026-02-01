@@ -3,9 +3,21 @@ app:
         createUser:
             validationFailed: User creation validation failed.
         updateUser:
-            userNotFoundException: 'User not found for id: {{ id }}'
+            userNotFoundException: 'User {{ id }} not found.'
             validationFailed: User update validation failed.
-    entity:
+        deleteUser:
+            userNotFoundException: 'User {{ id }} not found.'
+        listUsers:
+            invalidUserIdException: User IDs must be a list of integers.
+            invalidForwardPaginationException:
+                firstIds: Argument ($firstIds) should be a positive.
+                afterId: Argument ($afterId) should be greater than or equal to 0.
+                limit: Argument ($limit) should be greater than or equal to 1.
+            invalidSortingException:
+                direction: 'Argument ($direction) for {{ field }} must be: ASC or DESC.'
+                field: 'Argument ($field) must be: ID, CREATED_AT or UPDATED_AT.'
+                both: 'Argument ($sorts) must be an array with keys: field and direction.'
+    domain:
         user:
             salutation:
                 maxMessage: Your salutation title is too long. It should have {{ limit }} characters or less.
@@ -28,6 +40,10 @@ app:
                 uniqueEntityMessage: This email address {{ value }} is already used.
             phoneNumber:
                 maxMessage: Your phone number is too long. It should have {{ limit }} characters or less.
-            password:
-                maxMessage: Your password is too long. It should have {{ limit }} characters or less.
-                passwordStrengthMessage: Your password is too weak. Please use a stronger password.
+    graphql:
+        execution:
+            executor:
+                executorException: Error occurred when executing the GraphQL query.
+        request:
+            requestParser:
+                badRequestGraphQLException: '{{ object }}  must be an object.'

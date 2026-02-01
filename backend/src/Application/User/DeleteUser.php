@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Domain\User\User;
+use App\Domain\User\UserNotFoundException;
+use App\Domain\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,7 +25,7 @@ final readonly class DeleteUser
      *
      * @param int $id
      *
-     * @return \App\Entity\User
+     * @return \App\Domain\User\User
      */
     public function execute(int $id): User
     {
@@ -32,11 +33,12 @@ final readonly class DeleteUser
 
         if (!$user) {
             throw new UserNotFoundException(
-                $this->translator->trans('app.application.deleteUser.userNotFoundException'),
+                $this->translator->trans('app.application.deleteUser.userNotFoundException', ['{{ id }}' => $id]),
             );
         }
 
         $this->entityManager->remove($user);
+        $this->entityManager->flush();
 
         return $user;
     }

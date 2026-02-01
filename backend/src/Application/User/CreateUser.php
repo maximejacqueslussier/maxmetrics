@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
-use App\Entity\User;
+use App\Domain\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
@@ -34,7 +34,7 @@ final readonly class CreateUser
      * @param string|null $phoneNumber
      * @param string $password
      *
-     * @return \App\Entity\User
+     * @return \App\Domain\User\User
      */
     public function execute(
         ?string $salutation,
@@ -45,7 +45,6 @@ final readonly class CreateUser
         string $lastName,
         string $email,
         ?string $phoneNumber,
-        string $password
     ): User {
         $user = new User();
         $user
@@ -57,7 +56,6 @@ final readonly class CreateUser
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPhoneNumber($phoneNumber)
-            ->setPassword($password)
         ;
 
         $errors = $this->validator->validate($user);
@@ -70,6 +68,7 @@ final readonly class CreateUser
         }
 
         $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         return $user;
     }

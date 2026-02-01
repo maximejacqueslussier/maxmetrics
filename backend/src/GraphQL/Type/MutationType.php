@@ -4,45 +4,37 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type;
 
+use App\GraphQL\TypeRegistry;
+use App\GraphQL\Resolver\User\UserMutationResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use App\GraphQL\Input\CreateUserInputType;
-use App\GraphQL\Input\UpdateUserInputType;
-use App\GraphQL\Resolver\UserMutationResolver;
 
-/**
- * Represents the root GraphQL mutation.
- */
 final class MutationType extends ObjectType
 {
     public function __construct(
-        CreateUserPayloadType $createUserPayload,
-        CreateUserInputType $createUserInput,
-        UpdateUserPayloadType $updateUserPayload,
-        UpdateUserInputType $updateUserInput,
-        DeleteUserPayloadType $deleteUserPayload,
+        TypeRegistry $typeRegistry,
         UserMutationResolver $resolver,
     ) {
         parent::__construct([
             'name' => 'Mutation',
             'fields' => [
                 'createUser' => [
-                    'type' => $createUserPayload,
+                    'type' => $typeRegistry->createUserPayload(),
                     'args' => [
-                        'input' => Type::nonNull($createUserInput),
+                        'input' => Type::nonNull($typeRegistry->createUserInput()),
                     ],
                     'resolve' => [$resolver, 'createUser'],
                 ],
                 'updateUser' => [
-                    'type' => $updateUserPayload,
+                    'type' => $typeRegistry->updateUserPayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
-                        'input' => Type::nonNull($updateUserInput),
+                        'input' => Type::nonNull($typeRegistry->updateUserInput()),
                     ],
                     'resolve' => [$resolver, 'updateUser'],
                 ],
                 'deleteUser' => [
-                    'type' => $deleteUserPayload,
+                    'type' => $typeRegistry->deleteUserPayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
                     ],
