@@ -1,14 +1,14 @@
 app:
     application:
-        createUser:
-            validationFailed: User creation validation failed.
-        updateUser:
-            userNotFoundException: 'User {{ id }} not found.'
-            validationFailed: User update validation failed.
-        deleteUser:
-            userNotFoundException: 'User {{ id }} not found.'
-        listUsers:
-            invalidUserIdException: User IDs must be a list of integers.
+        createProfile:
+            validationFailed: Profile creation validation failed.
+        updateProfile:
+            profileNotFoundException: 'Profile {{ id }} not found.'
+            validationFailed: Profile update validation failed.
+        deleteProfile:
+            profileNotFoundException: 'Profile {{ id }} not found.'
+        listProfiles:
+            invalidProfileIdException: Profile IDs must be a list of integers.
             invalidForwardPaginationException:
                 firstIds: Argument ($firstIds) should be a positive.
                 afterId: Argument ($afterId) should be greater than or equal to 0.
@@ -18,7 +18,17 @@ app:
                 field: 'Argument ($field) must be: ID, CREATED_AT or UPDATED_AT.'
                 both: 'Argument ($sorts) must be an array with keys: field and direction.'
     domain:
-        user:
+        account:
+            username:
+                notBlankMessage: Your username should not be blank.
+                maxMessage: Your username is too long. It should have {{ limit }} characters or less.
+                uniqueEntityMessage: This username {{ value }} is already used.
+            roles:
+                notBlankMessage: Your roles should not be blank.
+            password:
+                notBlankMessage: Your password should not be blank.
+                maxMessage: Your password is too long. It should have {{ limit }} characters or less.
+        profile:
             salutation:
                 maxMessage: Your salutation title is too long. It should have {{ limit }} characters or less.
             pronouns:

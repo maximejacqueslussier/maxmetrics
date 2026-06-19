@@ -7,26 +7,28 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/doctrine-bundle": "^3.2.4",
         "doctrine/doctrine-migrations-bundle": "^4.0",
-        "doctrine/orm": "^3.6",
-        "phpdocumentor/reflection-docblock": "^6.0",
-        "phpstan/phpdoc-parser": "^2.3",
+        "doctrine/orm": "^3.6.7",
+        "firebase/php-jwt": "^7.1",
+        "phpdocumentor/reflection-docblock": "^6.0.3",
+        "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.11",
         "symfony/framework-bundle": "7.4.*",
         "symfony/http-foundation": "7.4.*",
-        "symfony/monolog-bundle": "^4.0",
+        "symfony/monolog-bundle": "^4.0.2",
         "symfony/property-access": "7.4.*",
         "symfony/property-info": "7.4.*",
         "symfony/routing": "7.4.*",
         "symfony/runtime": "7.4.*",
+        "symfony/security-bundle": "7.4.*",
         "symfony/serializer": "7.4.*",
-        "symfony/translation": "^7.4",
+        "symfony/translation": "^7.4.10",
         "symfony/validator": "7.4.*",
         "symfony/yaml": "7.4.*",
-        "webonyx/graphql-php": "^15.29"
+        "webonyx/graphql-php": "^15.33.1"
     },
     "config": {
         "allow-plugins": {
@@ -79,6 +81,6 @@
         }
     },
     "require-dev": {
-        "slevomat/coding-standard": "^8.26"
+        "slevomat/coding-standard": "^8.29"
     }
 }

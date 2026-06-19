@@ -17,13 +17,6 @@ final readonly class RequestParser
     ) {
     }
 
-    /**
-     * Parse the Http Request body to extract query and variables to create a specific GraphQL Request object.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \App\GraphQL\Request\RequestInterface
-     */
     public function parse(HttpRequest $request): RequestInterface
     {
         $input = json_decode(

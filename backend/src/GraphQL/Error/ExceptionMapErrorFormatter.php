@@ -17,13 +17,6 @@ final readonly class ExceptionMapErrorFormatter implements ErrorFormatterInterfa
     ) {
     }
 
-    /**
-     * Returns true if the previous exception matches the mapped exception.
-     *
-     * @param \GraphQL\Error\Error $error
-     *
-     * @return bool
-     */
     public function supports(Error $error): bool
     {
         $exception = $error->getPrevious();
@@ -41,13 +34,6 @@ final readonly class ExceptionMapErrorFormatter implements ErrorFormatterInterfa
         return false;
     }
 
-    /**
-     * Formats the mapped exception into a GraphQL compliant error array.
-     *
-     * @param \GraphQL\Error\Error $error
-     *
-     * @return array<string, mixed>
-     */
     public function format(Error $error): array
     {
         $exception = $error->getPrevious();
@@ -74,21 +60,11 @@ final readonly class ExceptionMapErrorFormatter implements ErrorFormatterInterfa
         ];
     }
 
-    /**
-     * Higher than the default error formatter.
-     *
-     * @return int
-     */
     public static function getPriority(): int
     {
         return 10;
     }
 
-    /**
-     * Get the configuration (code, message, field, extensions) for the mapped exception.
-     *
-     * return array<array<string, mixed>>
-     */
     private function getConfig(Throwable $exception): array
     {
         foreach ($this->map as $class => $config) {

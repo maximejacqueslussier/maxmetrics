@@ -9,9 +9,6 @@ use App\GraphQL\Type\QueryType;
 use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 
-/**
- * This class encapsulate the GraphQLSchema class into a stateless, immutable and single-purpose service.
- */
 final class Schema
 {
     private GraphQLSchema $schema;

@@ -12,21 +12,12 @@ use function array_replace_recursive;
 
 final readonly class ErrorFormatterChain
 {
-    /**
-     * Chains all error formatters together based on priority.
-     * @see config/services.yaml for autowiring.
-     */
     public function __construct(
         private iterable $errorFormatters,
         private bool $isDebug,
     ) {
     }
 
-    /**
-     * Format the error messages as array of strings.
-     *
-     * @return array<string, mixed>
-     */
     public function format(Error $error): array
     {
         $debugFlags = $this->isDebug

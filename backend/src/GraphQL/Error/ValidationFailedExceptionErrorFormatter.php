@@ -15,13 +15,6 @@ final readonly class ValidationFailedExceptionErrorFormatter implements ErrorFor
     ) {
     }
 
-    /**
-     * Returns true if the previous exception is an instance of ValidationFailedException.
-     *
-     * @param \GraphQL\Error\Error
-     *
-     * @return bool
-     */
     public function supports(Error $error): bool
     {
         $exception = $error->getPrevious();
@@ -29,13 +22,6 @@ final readonly class ValidationFailedExceptionErrorFormatter implements ErrorFor
         return $exception instanceof ValidationFailedException;
     }
 
-    /**
-     * Formats a ValidationFailedException into an array of data explaining the validation errors.
-     *
-     * @param \GraphQL\Error\Error
-     *
-     * @return array<string, mixed>
-     */
     public function format(Error $error): array
     {
         $exception = $error->getPrevious();
@@ -57,11 +43,6 @@ final readonly class ValidationFailedExceptionErrorFormatter implements ErrorFor
         ];
     }
 
-    /**
-     * Get a high priority because this depends on User Validation.
-     *
-     * @return int
-     */
     public static function getPriority(): int
     {
         return 10;

@@ -25,13 +25,6 @@ final readonly class Executor
     ) {
     }
 
-    /**
-     * Execute the GraphQL query.
-     *
-     * @param \App\GraphQL\Request\Request
-     *
-     * @return GraphQL\Executor\ExecutionResult
-     */
     public function executeQuery(Request $request): ExecutionResult
     {
         try {

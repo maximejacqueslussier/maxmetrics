@@ -18,11 +18,6 @@ final class ExecutorException extends RuntimeException
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * Returns the original GraphQL::executeQuery.
-     *
-     * @return string[]
-     */
     public function getResult(): ExecutionResult
     {
         return $this->result;

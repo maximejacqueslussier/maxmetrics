@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\GraphQL\Type;
 
 use App\GraphQL\TypeRegistry;
-use App\GraphQL\Resolver\User\UserMutationResolver;
+use App\GraphQL\Resolver\Profile\ProfileMutationResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
@@ -13,32 +13,32 @@ final class MutationType extends ObjectType
 {
     public function __construct(
         TypeRegistry $typeRegistry,
-        UserMutationResolver $resolver,
+        ProfileMutationResolver $resolver,
     ) {
         parent::__construct([
             'name' => 'Mutation',
             'fields' => [
-                'createUser' => [
-                    'type' => $typeRegistry->createUserPayload(),
+                'createProfile' => [
+                    'type' => $typeRegistry->createProfilePayload(),
                     'args' => [
-                        'input' => Type::nonNull($typeRegistry->createUserInput()),
+                        'input' => Type::nonNull($typeRegistry->createProfileInput()),
                     ],
-                    'resolve' => [$resolver, 'createUser'],
+                    'resolve' => [$resolver, 'createProfile'],
                 ],
-                'updateUser' => [
-                    'type' => $typeRegistry->updateUserPayload(),
+                'updateProfile' => [
+                    'type' => $typeRegistry->updateProfilePayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
-                        'input' => Type::nonNull($typeRegistry->updateUserInput()),
+                        'input' => Type::nonNull($typeRegistry->updateProfileInput()),
                     ],
-                    'resolve' => [$resolver, 'updateUser'],
+                    'resolve' => [$resolver, 'updateProfile'],
                 ],
-                'deleteUser' => [
-                    'type' => $typeRegistry->deleteUserPayload(),
+                'deleteProfile' => [
+                    'type' => $typeRegistry->deleteProfilePayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
                     ],
-                    'resolve' => [$resolver, 'deleteUser'],
+                    'resolve' => [$resolver, 'deleteProfile'],
                 ],
             ],
         ]);

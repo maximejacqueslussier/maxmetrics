@@ -4,44 +4,43 @@ declare(strict_types=1);
 
 namespace App\GraphQL;
 
-use App\GraphQL\Input\User\CreateUserInputType;
-use App\GraphQL\Input\User\UpdateUserInputType;
-use App\GraphQL\Input\User\UserFilterInputType;
-use App\GraphQL\Input\User\UserOrderByInputType;
+use App\GraphQL\Input\Profile\CreateProfileInputType;
+use App\GraphQL\Input\Profile\UpdateProfileInputType;
+use App\GraphQL\Input\Profile\ProfileFilterInputType;
+use App\GraphQL\Input\Profile\ProfileOrderByInputType;
 use App\GraphQL\Type\PageInfoType;
 use App\GraphQL\Type\Definition\DateTimeType;
 use App\GraphQL\Type\Definition\OrderByDirectionType;
-use App\GraphQL\Type\User\CreateUserPayloadType;
-use App\GraphQL\Type\User\DeleteUserPayloadType;
-use App\GraphQL\Type\User\UpdateUserPayloadType;
-use App\GraphQL\Type\User\UserConnectionType;
-use App\GraphQL\Type\User\UserEdgeType;
-use App\GraphQL\Type\User\UserOrderByFieldType;
-use App\GraphQL\Type\User\UserType;
+use App\GraphQL\Type\Profile\CreateProfilePayloadType;
+use App\GraphQL\Type\Profile\DeleteProfilePayloadType;
+use App\GraphQL\Type\Profile\UpdateProfilePayloadType;
+use App\GraphQL\Type\Profile\ProfileConnectionType;
+use App\GraphQL\Type\Profile\ProfileEdgeType;
+use App\GraphQL\Type\Profile\ProfileOrderByFieldType;
+use App\GraphQL\Type\Profile\ProfileType;
 
 final class TypeRegistry
 {
-    /** @var array<string, mixed> */
     private array $types = [];
 
-    public function createUserInput(): CreateUserInputType
+    public function createProfileInput(): CreateProfileInputType
     {
-        return $this->types['CreateUserInput'] ??= new CreateUserInputType();
+        return $this->types['CreateProfileInput'] ??= new CreateProfileInputType();
     }
 
-    public function updateUserInput(): UpdateUserInputType
+    public function updateProfileInput(): UpdateProfileInputType
     {
-        return $this->types['UpdateUserInput'] ??= new UpdateUserInputType();
+        return $this->types['UpdateProfileInput'] ??= new UpdateProfileInputType();
     }
 
-    public function userFilterInput(): UserFilterInputType
+    public function profileFilterInput(): ProfileFilterInputType
     {
-        return $this->types['UserFilterInput'] ??= new UserFilterInputType();
+        return $this->types['ProfileFilterInput'] ??= new ProfileFilterInputType();
     }
-    
-    public function userOrderByInput(): UserOrderByInputType
+
+    public function profileOrderByInput(): ProfileOrderByInputType
     {
-        return $this->types['UserOrderByInput'] ??= new UserOrderByInputType($this);
+        return $this->types['ProfileOrderByInput'] ??= new ProfileOrderByInputType($this);
     }
 
     public function pageInfo(): PageInfoType
@@ -53,44 +52,44 @@ final class TypeRegistry
     {
         return $this->types['DateTime'] ??= new DateTimeType();
     }
-    
+
     public function orderByDirection(): OrderByDirectionType
     {
         return $this->types['OrderByDirection'] ??= new OrderByDirectionType();
     }
 
-    public function createUserPayload(): CreateUserPayloadType
+    public function createProfilePayload(): CreateProfilePayloadType
     {
-        return $this->types['CreateUserPayload'] ??= new CreateUserPayloadType($this);
+        return $this->types['CreateProfilePayload'] ??= new CreateProfilePayloadType($this);
     }
 
-    public function deleteUserPayload(): DeleteUserPayloadType
+    public function deleteProfilePayload(): DeleteProfilePayloadType
     {
-        return $this->types['DeleteUserPayload'] ??= new DeleteUserPayloadType();
+        return $this->types['DeleteProfilePayload'] ??= new DeleteProfilePayloadType();
     }
 
-    public function updateUserPayload(): UpdateUserPayloadType
+    public function updateProfilePayload(): UpdateProfilePayloadType
     {
-        return $this->types['UpdateUserPayload'] ??= new UpdateUserPayloadType($this);
+        return $this->types['UpdateProfilePayload'] ??= new UpdateProfilePayloadType($this);
     }
 
-    public function userConnection(): UserConnectionType
+    public function profileConnection(): ProfileConnectionType
     {
-        return $this->types['UserConnection'] ??= new UserConnectionType($this);
+        return $this->types['ProfileConnection'] ??= new ProfileConnectionType($this);
     }
 
-    public function userEdge(): UserEdgeType
+    public function profileEdge(): ProfileEdgeType
     {
-        return $this->types['UserEdge'] ??= new UserEdgeType($this);
-    }
-    
-    public function userOrderByField(): UserOrderByFieldType
-    {
-        return $this->types['UserOrderByField'] ??= new UserOrderByFieldType();
+        return $this->types['ProfileEdge'] ??= new ProfileEdgeType($this);
     }
 
-    public function user(): UserType
+    public function profileOrderByField(): ProfileOrderByFieldType
     {
-        return $this->types['User'] ??= new UserType($this);
+        return $this->types['ProfileOrderByField'] ??= new ProfileOrderByFieldType();
+    }
+
+    public function profile(): ProfileType
+    {
+        return $this->types['Profile'] ??= new ProfileType($this);
     }
 }
