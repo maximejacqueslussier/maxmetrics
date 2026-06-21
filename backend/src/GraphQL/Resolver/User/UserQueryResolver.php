@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Resolver\Profile;
+namespace App\GraphQL\Resolver\User;
 
-use App\Application\Profile\ListProfiles\ListProfiles;
-use App\Application\Profile\ListProfiles\ProfilesListQuery;
-use App\Domain\Profile\Profile;
+use App\Application\User\ListUsers\ListUsers;
+use App\Application\User\ListUsers\UsersListQuery;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
 use function array_map;
 use function array_pop;
-use function count;
-use function base64_encode;
 use function base64_decode;
+use function base64_encode;
+use function count;
+use function end;
 use function is_array;
 use function is_string;
-use function json_encode;
 use function json_decode;
+use function json_encode;
 
-final readonly class ProfileQueryResolver
+final readonly class UserQueryResolver
 {
     public function __construct(
-        private ListProfiles $listProfiles,
+        private ListUsers $listUsers,
         private TranslatorInterface $translator,
     ) {
     }
 
-    public function listProfiles($root, array $args): iterable
+    public function listUsers(mixed $root, array $args): iterable
     {
-        $query = new ProfilesListQuery($this->translator);
+        $query = new UsersListQuery($this->translator);
         $hasPreviousPage = false;
         $hasNextPage = false;
 
@@ -64,20 +64,20 @@ final readonly class ProfileQueryResolver
             }
         }
 
-        $profiles = $this->listProfiles->execute($query);
+        $users = $this->listUsers->execute($query);
 
-        $edges = array_map(function (Profile $profile) {
+        $edges = array_map(function (object $user) {
             $cursor = base64_encode(
                 json_encode([
-                    'id' => $profile->getId(),
+                    'id' => $user->getId(),
                 ], JSON_THROW_ON_ERROR),
             );
 
             return [
-                'node' => $profile,
+                'node' => $user,
                 'cursor' => $cursor,
             ];
-        }, $profiles);
+        }, $users);
 
         $startCursor = null;
         $endCursor = null;
@@ -99,16 +99,14 @@ final readonly class ProfileQueryResolver
             }
         }
 
-        $pageInfo = [
-            'hasPreviousPage' => $hasPreviousPage,
-            'hasNextPage' => $hasNextPage,
-            'startCursor' => $startCursor,
-            'endCursor' => $endCursor,
-        ];
-
         return [
             'edges' => $edges,
-            'pageInfo' => $pageInfo,
+            'pageInfo' => [
+                'hasPreviousPage' => $hasPreviousPage,
+                'hasNextPage' => $hasNextPage,
+                'startCursor' => $startCursor,
+                'endCursor' => $endCursor,
+            ],
         ];
     }
 }

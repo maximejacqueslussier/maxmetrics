@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Type\Profile;
+namespace App\GraphQL\Type\User;
 
 use App\GraphQL\TypeRegistry;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
-final class ProfileConnectionType extends ObjectType
+final class CreateUserPayloadType extends ObjectType
 {
     public function __construct(
         TypeRegistry $typeRegistry,
     ) {
         parent::__construct([
-            'name' => 'ProfileConnection',
+            'name' => 'CreateUserPayload',
             'fields' => [
-                'edges' => Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->profileEdge()))),
-                'pageInfo' => Type::nonNull($typeRegistry->pageInfo()),
+                'user' => [
+                    'type' => Type::nonNull($typeRegistry->user()),
+                ],
             ],
         ]);
     }

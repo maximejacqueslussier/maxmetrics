@@ -8,11 +8,11 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.graphql.error_map:
-        App\Application\Profile\ListProfiles\InvalidProfileIdException:
-            code: INVALID_PROFILE_ID
+        App\Application\User\ListUsers\InvalidUserIdException:
+            code: INVALID_USER_ID
             field: id
-        App\Domain\Profile\ProfileNotFoundException:
-            code: PROFILE_NOT_FOUND
+        App\Application\User\UserNotFoundException:
+            code: USER_NOT_FOUND
             field: id
 
 services:

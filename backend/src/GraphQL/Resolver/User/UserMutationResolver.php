@@ -2,27 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Resolver\Profile;
+namespace App\GraphQL\Resolver\User;
 
-use App\Application\Profile\CreateProfile;
-use App\Application\Profile\DeleteProfile;
-use App\Application\Profile\UpdateProfile;
-use App\Domain\Profile\Profile;
+use App\Application\User\CreateUser;
+use App\Application\User\DeleteUser;
+use App\Application\User\UpdateUser;
 
-final readonly class ProfileMutationResolver
+final readonly class UserMutationResolver
 {
     public function __construct(
-        private CreateProfile $createProfile,
-        private UpdateProfile $updateProfile,
-        private DeleteProfile $deleteProfile,
+        private CreateUser $createUser,
+        private UpdateUser $updateUser,
+        private DeleteUser $deleteUser,
     ) {
     }
 
-    public function createProfile(mixed $root, array $args): array
+    public function createUser(mixed $root, array $args): array
     {
         $input = $args['input'];
 
-        $profile = $this->createProfile->execute(
+        $user = $this->createUser->execute(
+            $input['username'],
+            $input['password'],
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
             $input['genderIdentity'] ?? null,
@@ -33,15 +34,15 @@ final readonly class ProfileMutationResolver
             $input['phoneNumber'] ?? null,
         );
 
-        return ['profile' => $profile];
+        return ['user' => $user];
     }
 
-    public function updateProfile(mixed $root, array $args): array
+    public function updateUser(mixed $root, array $args): array
     {
         $id = (int) $args['id'];
         $input = $args['input'];
 
-        $result = $this->updateProfile->execute(
+        $result = $this->updateUser->execute(
             $id,
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
@@ -54,17 +55,17 @@ final readonly class ProfileMutationResolver
         );
 
         return [
-            'profile' => $result->getProfile(),
+            'user' => $result->getUser(),
             'changedFields' => $result->getChangedFields(),
         ];
     }
 
-    public function deleteProfile(mixed $root, array $args): array
+    public function deleteUser(mixed $root, array $args): array
     {
         $id = (int) $args['id'];
 
-        $profile = $this->deleteProfile->execute($id);
+        $this->deleteUser->execute($id);
 
-        return ['deletedProfileId' => $id];
+        return ['deletedUserId' => $id];
     }
 }

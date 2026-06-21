@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\GraphQL\Type;
 
 use App\GraphQL\TypeRegistry;
-use App\GraphQL\Resolver\Profile\ProfileQueryResolver;
+use App\GraphQL\Resolver\User\UserQueryResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
@@ -13,13 +13,13 @@ final class QueryType extends ObjectType
 {
     public function __construct(
         TypeRegistry $typeRegistry,
-        ProfileQueryResolver $profileQueryResolver,
+        UserQueryResolver $userQueryResolver,
     ) {
         parent::__construct([
             'name' => 'Query',
             'fields' => [
-                'profiles' => [
-                    'type' => Type::nonNull($typeRegistry->profileConnection()),
+                'users' => [
+                    'type' => Type::nonNull($typeRegistry->userConnection()),
                     'args' => [
                         'first' => [
                             'type' => Type::int(),
@@ -28,15 +28,15 @@ final class QueryType extends ObjectType
                             'type' => Type::string(),
                         ],
                         'filter' => [
-                            'type' => $typeRegistry->profileFilterInput(),
+                            'type' => $typeRegistry->userFilterInput(),
                         ],
                         'orderBy' => [
                             'type' => Type::listOf(
-                                Type::nonNull($typeRegistry->profileOrderByInput()),
+                                Type::nonNull($typeRegistry->userOrderByInput()),
                             ),
-                        ]
+                        ],
                     ],
-                    'resolve' => [$profileQueryResolver, 'listProfiles'],
+                    'resolve' => [$userQueryResolver, 'listUsers'],
                 ],
             ],
         ]);

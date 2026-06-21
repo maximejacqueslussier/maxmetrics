@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Type\Profile;
+namespace App\GraphQL\Type\User;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
-final class DeleteProfilePayloadType extends ObjectType
+final class DeleteUserPayloadType extends ObjectType
 {
     public function __construct()
     {
         parent::__construct([
-            'name' => 'DeleteProfilePayload',
+            'name' => 'DeleteUserPayload',
             'fields' => [
-                'deletedProfileId' => [
+                'deletedUserId' => [
                     'type' => Type::nonNull(Type::id()),
                 ],
             ],

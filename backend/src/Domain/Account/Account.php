@@ -22,7 +22,6 @@ final class Account implements UserInterface, PasswordAuthenticatedUserInterface
     public const string USERNAME = 'username';
     public const string ROLES = 'roles';
     public const string PASSWORD = 'password';
-    public const string PROFILE = 'profile';
 
     #[ORM\Id]
     #[ORM\Column]
@@ -42,9 +41,6 @@ final class Account implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank(message: 'app.domain.account.password.notBlankMessage')]
     #[Assert\Length(max: 255, maxMessage: 'app.domain.account.password.maxMessage')]
     private ?string $password = null;
-
-    #[ORM\OneToOne(targetEntity: Profile::class, mappedBy: 'account')]
-    private ?Profile $profile = null;
 
     public function getId(): ?int
     {
@@ -103,18 +99,6 @@ final class Account implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getProfile(): ?Profile
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(Profile $profile): self
-    {
-        $this->profile = $profile;
 
         return $this;
     }

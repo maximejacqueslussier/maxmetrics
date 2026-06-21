@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\GraphQL\Type;
 
 use App\GraphQL\TypeRegistry;
-use App\GraphQL\Resolver\Profile\ProfileMutationResolver;
+use App\GraphQL\Resolver\User\UserMutationResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
@@ -13,32 +13,32 @@ final class MutationType extends ObjectType
 {
     public function __construct(
         TypeRegistry $typeRegistry,
-        ProfileMutationResolver $resolver,
+        UserMutationResolver $userResolver,
     ) {
         parent::__construct([
             'name' => 'Mutation',
             'fields' => [
-                'createProfile' => [
-                    'type' => $typeRegistry->createProfilePayload(),
+                'createUser' => [
+                    'type' => $typeRegistry->createUserPayload(),
                     'args' => [
-                        'input' => Type::nonNull($typeRegistry->createProfileInput()),
+                        'input' => Type::nonNull($typeRegistry->createUserInput()),
                     ],
-                    'resolve' => [$resolver, 'createProfile'],
+                    'resolve' => [$userResolver, 'createUser'],
                 ],
-                'updateProfile' => [
-                    'type' => $typeRegistry->updateProfilePayload(),
+                'updateUser' => [
+                    'type' => $typeRegistry->updateUserPayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
-                        'input' => Type::nonNull($typeRegistry->updateProfileInput()),
+                        'input' => Type::nonNull($typeRegistry->updateUserInput()),
                     ],
-                    'resolve' => [$resolver, 'updateProfile'],
+                    'resolve' => [$userResolver, 'updateUser'],
                 ],
-                'deleteProfile' => [
-                    'type' => $typeRegistry->deleteProfilePayload(),
+                'deleteUser' => [
+                    'type' => $typeRegistry->deleteUserPayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
                     ],
-                    'resolve' => [$resolver, 'deleteProfile'],
+                    'resolve' => [$userResolver, 'deleteUser'],
                 ],
             ],
         ]);

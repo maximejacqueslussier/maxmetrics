@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Profile;
+namespace App\Application\User;
 
-use App\Domain\Profile\Profile;
-
-final readonly class UpdateProfileResult
+final readonly class UpdateUserResult
 {
     public function __construct(
-        private Profile $profile,
+        private object $user,
         private array $changedFields,
     ) {
     }
 
-    public function getProfile(): Profile
+    public function getUser(): object
     {
-        return $this->profile;
+        return $this->user;
     }
 
     public function getChangedFields(): array

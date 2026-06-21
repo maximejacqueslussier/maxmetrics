@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Profile\ListProfiles;
+namespace App\Application\User\ListUsers;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function ctype_digit;
 
-final class ProfilesListQuery
+final class UsersListQuery
 {
     private const int DEFAULT_LIMIT = 25;
     private const array SORT_MAP = ['id', 'createdAt', 'updatedAt'];
@@ -33,8 +33,8 @@ final class ProfilesListQuery
     {
         foreach ($ids as $id) {
             if (!ctype_digit($id)) {
-                throw new InvalidProfileIdException(
-                    $this->translator->trans('app.application.listProfiles.invalidProfileIdException')
+                throw new InvalidUserIdException(
+                    $this->translator->trans('app.application.listUsers.invalidUserIdException')
                 );
             }
 
@@ -53,7 +53,7 @@ final class ProfilesListQuery
     {
         if (!ctype_digit($firstIds) && $firstIds <= 0) {
             throw new InvalidForwardPaginationException(
-                $this->translator->trans('app.application.listProfiles.invalidForwardPaginationException.firstIds'),
+                $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.firstIds'),
             );
         }
 
@@ -71,7 +71,7 @@ final class ProfilesListQuery
     {
         if (!ctype_digit($afterId) && $afterId < 0) {
             throw new InvalidForwardPaginationException(
-                $this->translator->trans('app.application.listProfiles.invalidForwardPaginationException.afterId'),
+                $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.afterId'),
             );
         }
 
@@ -89,7 +89,7 @@ final class ProfilesListQuery
     {
         if (!ctype_digit($limit) && $limit < 1) {
             throw new InvalidForwardPaginationException(
-                $this->translator->trans('app.application.listProfiles.invalidForwardPaginationException.limit'),
+                $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.limit'),
             );
         }
 
@@ -106,7 +106,7 @@ final class ProfilesListQuery
         foreach ($sorts as $sort) {
             if (!(array_key_exists('field', $sort) && array_key_exists('direction', $sort))) {
                 throw new InvalidSortingException(
-                    $this->translator->trans('app.application.listProfiles.invalidSortingException.both', [
+                    $this->translator->trans('app.application.listUsers.invalidSortingException.both', [
                         '{{ field }}' => $sort['field'],
                     ]),
                 );
@@ -114,7 +114,7 @@ final class ProfilesListQuery
 
             if ($sort['direction'] !== 'ASC' && $sort['direction'] !== 'DESC') {
                 throw new InvalidSortingException(
-                    $this->translator->trans('app.application.listProfiles.invalidSortingException.direction', [
+                    $this->translator->trans('app.application.listUsers.invalidSortingException.direction', [
                         '{{ field }}' => $sort['field'],
                     ]),
                 );
@@ -122,7 +122,7 @@ final class ProfilesListQuery
 
             if (!in_array($sort['field'], self::SORT_MAP, true)) {
                 throw new InvalidSortingException(
-                    $this->translator->trans('app.application.listProfiles.invalidSortingException.field', [
+                    $this->translator->trans('app.application.listUsers.invalidSortingException.field', [
                         '{{ field }}' => $sort['field'],
                     ]),
                 );

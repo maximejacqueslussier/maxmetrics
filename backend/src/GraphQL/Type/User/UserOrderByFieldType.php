@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Type\Profile;
+namespace App\GraphQL\Type\User;
 
 use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\Type;
 
-final class ProfileOrderByFieldType extends EnumType
+final class UserOrderByFieldType extends EnumType
 {
     public function __construct()
     {
         parent::__construct([
-            'name' => 'ProfileOrderByField',
+            'name' => 'UserOrderByField',
             'values' => [
                 'ID' => [
                     'value' => 'id',

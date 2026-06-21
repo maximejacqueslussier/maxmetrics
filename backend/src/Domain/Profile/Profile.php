@@ -80,7 +80,7 @@ final class Profile
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private DateTime $updatedAt;
 
-    #[ORM\OneToOne(targetEntity: Account::class, inversedBy: 'profile')]
+    #[ORM\OneToOne(targetEntity: Account::class)]
     private ?Account $account = null;
 
     public function getId(): ?int

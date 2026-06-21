@@ -1,14 +1,14 @@
 app:
     application:
-        createProfile:
-            validationFailed: Profile creation validation failed.
-        updateProfile:
-            profileNotFoundException: 'Profile {{ id }} not found.'
-            validationFailed: Profile update validation failed.
-        deleteProfile:
-            profileNotFoundException: 'Profile {{ id }} not found.'
-        listProfiles:
-            invalidProfileIdException: Profile IDs must be a list of integers.
+        createUser:
+            validationFailed: User creation validation failed.
+        updateUser:
+            userNotFoundException: 'User {{ id }} not found.'
+            validationFailed: User update validation failed.
+        deleteUser:
+            userNotFoundException: 'User {{ id }} not found.'
+        listUsers:
+            invalidUserIdException: User IDs must be a list of integers.
             invalidForwardPaginationException:
                 firstIds: Argument ($firstIds) should be a positive.
                 afterId: Argument ($afterId) should be greater than or equal to 0.

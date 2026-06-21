@@ -2,18 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Input\Profile;
+namespace App\GraphQL\Input\User;
 
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
-final class UpdateProfileInputType extends InputObjectType
+final class CreateUserInputType extends InputObjectType
 {
     public function __construct()
     {
         parent::__construct([
-            'name' => 'UpdateProfileInput',
+            'name' => 'CreateUserInput',
             'fields' => [
+                'username' => [
+                    'type' => Type::nonNull(Type::string()),
+                ],
+                'password' => [
+                    'type' => Type::nonNull(Type::string()),
+                ],
                 'salutation' => [
                     'type' => Type::string(),
                 ],
@@ -24,16 +30,16 @@ final class UpdateProfileInputType extends InputObjectType
                     'type' => Type::string(),
                 ],
                 'firstName' => [
-                    'type' => Type::string(),
+                    'type' => Type::nonNull(Type::string()),
                 ],
                 'middleName' => [
                     'type' => Type::string(),
                 ],
                 'lastName' => [
-                    'type' => Type::string(),
+                    'type' => Type::nonNull(Type::string()),
                 ],
                 'email' => [
-                    'type' => Type::string(),
+                    'type' => Type::nonNull(Type::string()),
                 ],
                 'phoneNumber' => [
                     'type' => Type::string(),
