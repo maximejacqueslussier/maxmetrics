@@ -16,6 +16,8 @@ const LIST_USERS_QUERY = `
             edges {
                 node {
                     id
+                    username
+                    role
                     salutation
                     pronouns
                     genderIdentity
@@ -47,6 +49,8 @@ const GET_USER_QUERY = `
             edges {
                 node {
                     id
+                    username
+                    role
                     salutation
                     pronouns
                     genderIdentity
@@ -68,6 +72,8 @@ const CREATE_USER_MUTATION = `
         createUser(input: $input) {
             user {
                 id
+                username
+                role
                 salutation
                 pronouns
                 genderIdentity
@@ -88,6 +94,8 @@ const UPDATE_USER_MUTATION = `
         updateUser(id: $id, input: $input) {
             user {
                 id
+                username
+                role
                 salutation
                 pronouns
                 genderIdentity

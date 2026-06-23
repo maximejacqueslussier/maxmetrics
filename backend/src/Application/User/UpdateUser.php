@@ -23,6 +23,7 @@ final readonly class UpdateUser
 
     public function execute(
         int $id,
+        ?string $role,
         ?string $salutation,
         ?string $pronouns,
         ?string $genderIdentity,
@@ -41,6 +42,11 @@ final readonly class UpdateUser
         }
 
         $changedFields = [];
+
+        if ($role !== null && $user->getAccount() !== null) {
+            $user->getAccount()->setRoles([$role]);
+            $changedFields[] = 'role';
+        }
 
         if ($salutation !== null) {
             $user->setSalutation($salutation);
@@ -89,6 +95,17 @@ final readonly class UpdateUser
                 $this->translator->trans('app.application.updateUser.validationFailed'),
                 $errors,
             );
+        }
+
+        if ($role !== null && $user->getAccount() !== null) {
+            $accountErrors = $this->validator->validate($user->getAccount());
+
+            if (count($accountErrors) > 0) {
+                throw new ValidationFailedException(
+                    $this->translator->trans('app.application.updateUser.validationFailed'),
+                    $accountErrors,
+                );
+            }
         }
 
         $this->entityManager->persist($user);

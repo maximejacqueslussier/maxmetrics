@@ -24,6 +24,7 @@ final readonly class UserMutationResolver
         $user = $this->createUser->execute(
             $input['username'],
             $input['password'],
+            $input['role'],
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
             $input['genderIdentity'] ?? null,
@@ -44,6 +45,7 @@ final readonly class UserMutationResolver
 
         $result = $this->updateUser->execute(
             $id,
+            $input['role'] ?? null,
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
             $input['genderIdentity'] ?? null,

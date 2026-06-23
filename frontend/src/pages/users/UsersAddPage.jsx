@@ -10,6 +10,9 @@ export default function UsersAddPage() {
         
         const formData = new FormData(event.currentTarget)
         const input = {
+            username: formData.get('username'),
+            password: formData.get('password'),
+            role: formData.get('role'),
             salutation: formData.get('salutation'),
             firstName: formData.get('firstName'),
             middleName: formData.get('middleName'),

@@ -40,3 +40,9 @@ services:
         arguments:
             $errorFormatters: !tagged_iterator { tag: app.graphql.error_formatter, default_priority_method: getPriority }
             $isDebug: '%kernel.debug%'
+    
+    App\Infrastructure\Security\JwtAccessTokenHandler:
+        arguments:
+            $jwtSecret: '%env(JWT_SECRET)%'
+            $jwtIssuer: '%env(JWT_ISSUER)%'
+            $jwtAudience: '%env(JWT_AUDIENCE)%'

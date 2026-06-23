@@ -19,8 +19,8 @@ export default function DeleteUserDialog({ user, onCancel, onConfirm }) {
             aria-describedby="delete-user-description"
             onCancel={onCancel}>
             <p id="delete-user-title">Delete user?</p>
-            <p id="delete-user-description">Delete {user?.id}? This cannot be undone.</p>
-            <button type="button" onClick={onCancel} autoFocus>Cancel</button>
+            <p id="delete-user-description">Delete User {user?.id}? This cannot be undone.</p>
+            <button type="button" onClick={onCancel}>Cancel</button>
             <button type="button" onClick={() => onConfirm(user.id)}>Delete user</button>
         </dialog>
     )

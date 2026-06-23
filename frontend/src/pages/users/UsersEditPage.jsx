@@ -25,6 +25,7 @@ export default function UsersEditPage() {
         
         const formData = new FormData(event.currentTarget)
         const input = {
+            role: formData.get('role'),
             salutation: formData.get('salutation'),
             firstName: formData.get('firstName'),
             middleName: formData.get('middleName'),

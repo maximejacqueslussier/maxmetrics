@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Input\User;
 
+use App\GraphQL\TypeRegistry;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
 final class CreateUserInputType extends InputObjectType
 {
-    public function __construct()
-    {
+    public function __construct(
+        TypeRegistry $typeRegistry,
+    ) {
         parent::__construct([
             'name' => 'CreateUserInput',
             'fields' => [
@@ -19,6 +21,9 @@ final class CreateUserInputType extends InputObjectType
                 ],
                 'password' => [
                     'type' => Type::nonNull(Type::string()),
+                ],
+                'role' => [
+                    'type' => Type::nonNull($typeRegistry->userRole()),
                 ],
                 'salutation' => [
                     'type' => Type::string(),

@@ -17,6 +17,7 @@ use App\GraphQL\Type\User\UpdateUserPayloadType;
 use App\GraphQL\Type\User\UserConnectionType;
 use App\GraphQL\Type\User\UserEdgeType;
 use App\GraphQL\Type\User\UserOrderByFieldType;
+use App\GraphQL\Type\User\UserRoleType;
 use App\GraphQL\Type\User\UserType;
 
 final class TypeRegistry
@@ -25,12 +26,12 @@ final class TypeRegistry
 
     public function createUserInput(): CreateUserInputType
     {
-        return $this->types['CreateUserInput'] ??= new CreateUserInputType();
+        return $this->types['CreateUserInput'] ??= new CreateUserInputType($this);
     }
 
     public function updateUserInput(): UpdateUserInputType
     {
-        return $this->types['UpdateUserInput'] ??= new UpdateUserInputType();
+        return $this->types['UpdateUserInput'] ??= new UpdateUserInputType($this);
     }
 
     public function userFilterInput(): UserFilterInputType
@@ -86,6 +87,11 @@ final class TypeRegistry
     public function userOrderByField(): UserOrderByFieldType
     {
         return $this->types['UserOrderByField'] ??= new UserOrderByFieldType();
+    }
+
+    public function userRole(): UserRoleType
+    {
+        return $this->types['UserRole'] ??= new UserRoleType();
     }
 
     public function user(): UserType

@@ -23,6 +23,8 @@ export default function UsersListingWidget() {
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
+                        <th scope='col'>Username</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Salutation</th>
                         <th scope="col">Pronouns</th>
                         <th scope="col">Gender identity</th>
@@ -39,6 +41,8 @@ export default function UsersListingWidget() {
                     {users.map(user => (
                         <tr key={user.id}>
                             <td>{user.id}</td>
+                            <td>{user.username}</td>
+                            <td>{user.role}</td>
                             <td>{user.salutation}</td>
                             <td>{user.pronouns}</td>
                             <td>{user.genderIdentity}</td>

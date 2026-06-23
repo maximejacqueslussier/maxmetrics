@@ -35,6 +35,12 @@ final class Account implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'json')]
     #[Assert\NotBlank(message: 'app.domain.account.roles.notBlankMessage')]
+    #[Assert\Type(type: 'array', message: 'app.domain.account.roles.notArrayMessage')]
+    #[Assert\Count(min: 1, max: 1, minMessage: 'app.domain.account.roles.oneMessage')]
+    #[Assert\Unique(message: 'app.domain.account.roles.notUniqueMessage')]
+    #[Assert\All([
+        new Assert\Choice(choices: ['ROLE_USER', 'ROLE_ADMIN'], message: 'app.domain.account.roles.choiceMessage'),
+    ])]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
@@ -64,6 +70,11 @@ final class Account implements UserInterface, PasswordAuthenticatedUserInterface
         $this->username = $username;
 
         return $this;
+    }
+
+    public function getRole(): string
+    {
+        return $this->getRoles()[0];
     }
 
     public function getRoles(): array

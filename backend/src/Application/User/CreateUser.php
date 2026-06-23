@@ -27,6 +27,7 @@ final readonly class CreateUser
     public function execute(
         string $username,
         string $plainPassword,
+        string $role,
         ?string $salutation,
         ?string $pronouns,
         ?string $genderIdentity,
@@ -39,7 +40,7 @@ final readonly class CreateUser
         $account = new Account();
         $account
             ->setUsername($username)
-            ->setRoles(['ROLE_USER'])
+            ->setRoles([$role])
         ;
         $account->setPassword($this->passwordHasher->hashPassword($account, $plainPassword));
 

@@ -25,6 +25,10 @@ app:
                 uniqueEntityMessage: This username {{ value }} is already used.
             roles:
                 notBlankMessage: Your roles should not be blank.
+                notArrayMessage: The roles must be an array.
+                oneMessage: You must specify one role only.
+                notUniqueMessage: The roles must be unique.
+                choiceMessage: Role must be either ROLE_USER or ROLE_ADMIN.
             password:
                 notBlankMessage: Your password should not be blank.
                 maxMessage: Your password is too long. It should have {{ limit }} characters or less.
@@ -57,3 +61,11 @@ app:
         request:
             requestParser:
                 badRequestGraphQLException: '{{ object }}  must be an object.'
+    infrastructure:
+        security:
+            accessToken:
+                expired: Expired credentials.
+                invalid: Invalid credentials.
+                invalidAudience: Invalid credentials. Invalid audience.
+                invalidIssuer: Invalid credentials. Invalid issuer.
+                missingSubject: Invalid credentials. Missing username.

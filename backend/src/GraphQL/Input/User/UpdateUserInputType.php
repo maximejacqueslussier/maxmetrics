@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Input\User;
 
+use App\GraphQL\TypeRegistry;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
 final class UpdateUserInputType extends InputObjectType
 {
-    public function __construct()
-    {
+    public function __construct(
+        TypeRegistry $typeRegistry,
+    ) {
         parent::__construct([
             'name' => 'UpdateUserInput',
             'fields' => [
+                'role' => [
+                    'type' => $typeRegistry->userRole(),
+                ],
                 'salutation' => [
                     'type' => Type::string(),
                 ],
