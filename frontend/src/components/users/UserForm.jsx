@@ -1,7 +1,15 @@
 import { useState } from 'react'
 
-export default function UserForm({ mode, initialValues = {}, errors = {}, onSubmit }) {
+export default function UserForm({ mode, initialValues = {}, errors = {}, onSubmit, onReset }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+
+    function handleSubmit(event) {
+        event.preventDefault()
+
+        const input = Object.fromEntries(new FormData(event.currentTarget).entries())
+
+        onSubmit(input)
+    }
 
     return (
         <>
@@ -9,28 +17,33 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
             {Object.keys(errors).length > 0 && (
                 <p role="alert">Please fix the errors below.</p>
             )}
-            <form onSubmit={onSubmit}>
+            <form onSubmit={handleSubmit} onReset={onReset}>
                 <fieldset>
                     <legend>Account</legend>
 
                     {mode === 'add' && (
                         <>
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="username">Username <span aria-hidden="true">*</span></label>
                             <input type="text"
                                 id="username"
                                 name="username"
                                 aria-invalid={errors.username ? 'true' : undefined}
                                 aria-describedby={errors.username ? 'usernameError' : undefined}
                                 autoComplete="username"
+                                required
                                 maxLength="255" />
+                            {errors.username && (
+                                <p id="usernameError">{errors.username}</p>
+                            )}
 
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password">Password <span aria-hidden="true">*</span></label>
                             <input type={isPasswordVisible ? 'text' : 'password'}
                                 id="password"
                                 name="password"
                                 aria-invalid={errors.password ? 'true' : undefined}
                                 aria-describedby={errors.password ? 'passwordError' : undefined}
                                 autoComplete="off"
+                                required
                                 maxLength="255" />
                             <button type="button"
                                 aria-controls="password"

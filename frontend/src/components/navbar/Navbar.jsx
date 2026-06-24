@@ -10,6 +10,9 @@ export default function Navbar() {
                 <li>
                     <NavLink to='/users'>Users</NavLink>
                 </li>
+                <li>
+                    <NavLink to='/login'>Login</NavLink>
+                </li>
             </ul>
         </>
     )

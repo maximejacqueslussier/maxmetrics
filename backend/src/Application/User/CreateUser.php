@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
-use App\Domain\Account\Account;
+use App\Domain\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
@@ -17,7 +17,6 @@ final readonly class CreateUser
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private UserRepository $repository,
         private TranslatorInterface $translator,
         private ValidatorInterface $validator,
         private UserPasswordHasherInterface $passwordHasher,
@@ -36,16 +35,11 @@ final readonly class CreateUser
         string $lastName,
         string $email,
         ?string $phoneNumber,
-    ): object {
-        $account = new Account();
-        $account
+    ): User {
+        $user = new User();
+        $user
             ->setUsername($username)
             ->setRoles([$role])
-        ;
-        $account->setPassword($this->passwordHasher->hashPassword($account, $plainPassword));
-
-        $user = $this->repository->createUser();
-        $user
             ->setSalutation($salutation)
             ->setPronouns($pronouns)
             ->setGenderIdentity($genderIdentity)
@@ -54,29 +48,19 @@ final readonly class CreateUser
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPhoneNumber($phoneNumber)
-            ->setAccount($account)
         ;
+        $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));
 
-        $accountErrors = $this->validator->validate($account);
+        $errors = $this->validator->validate($user);
 
-        if (count($accountErrors) > 0) {
+        if (count($errors) > 0) {
             throw new ValidationFailedException(
                 $this->translator->trans('app.application.createUser.validationFailed'),
-                $accountErrors,
+                $errors,
             );
         }
 
-        $userErrors = $this->validator->validate($user);
-
-        if (count($userErrors) > 0) {
-            throw new ValidationFailedException(
-                $this->translator->trans('app.application.createUser.validationFailed'),
-                $userErrors,
-            );
-        }
-
-        return $this->entityManager->wrapInTransaction(function () use ($account, $user): object {
-            $this->entityManager->persist($account);
+        return $this->entityManager->wrapInTransaction(function () use ($user): User {
             $this->entityManager->persist($user);
 
             return $user;

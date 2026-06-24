@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\ListUsers;
 
-use App\Application\User\UserRepository;
+use App\Domain\User\UserRepository;
 
 final readonly class ListUsers
 {

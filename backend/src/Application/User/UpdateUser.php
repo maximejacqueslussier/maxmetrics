@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Domain\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,7 +34,7 @@ final readonly class UpdateUser
         ?string $email,
         ?string $phoneNumber,
     ): UpdateUserResult {
-        $user = $this->repository->findUser($id);
+        $user = $this->repository->find($id);
 
         if (!$user) {
             throw new UserNotFoundException(
@@ -43,8 +44,8 @@ final readonly class UpdateUser
 
         $changedFields = [];
 
-        if ($role !== null && $user->getAccount() !== null) {
-            $user->getAccount()->setRoles([$role]);
+        if ($role !== null) {
+            $user->setRoles([$role]);
             $changedFields[] = 'role';
         }
 
@@ -95,17 +96,6 @@ final readonly class UpdateUser
                 $this->translator->trans('app.application.updateUser.validationFailed'),
                 $errors,
             );
-        }
-
-        if ($role !== null && $user->getAccount() !== null) {
-            $accountErrors = $this->validator->validate($user->getAccount());
-
-            if (count($accountErrors) > 0) {
-                throw new ValidationFailedException(
-                    $this->translator->trans('app.application.updateUser.validationFailed'),
-                    $accountErrors,
-                );
-            }
         }
 
         $this->entityManager->persist($user);

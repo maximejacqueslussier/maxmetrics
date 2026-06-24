@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\GraphQL\Type;
 
 use App\GraphQL\TypeRegistry;
+use App\GraphQL\Resolver\Authentication\AuthenticationMutationResolver;
 use App\GraphQL\Resolver\User\UserMutationResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -14,6 +15,7 @@ final class MutationType extends ObjectType
     public function __construct(
         TypeRegistry $typeRegistry,
         UserMutationResolver $userResolver,
+        AuthenticationMutationResolver $authenticationResolver,
     ) {
         parent::__construct([
             'name' => 'Mutation',
@@ -39,6 +41,13 @@ final class MutationType extends ObjectType
                         'id' => Type::nonNull(Type::id()),
                     ],
                     'resolve' => [$userResolver, 'deleteUser'],
+                ],
+                'login' => [
+                    'type' => $typeRegistry->loginPayload(),
+                    'args' => [
+                        'input' => Type::nonNull($typeRegistry->loginInput())
+                    ],
+                    'resolve' => [$authenticationResolver, 'login'],
                 ],
             ],
         ]);

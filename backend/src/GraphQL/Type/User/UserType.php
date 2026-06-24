@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type\User;
 
-use App\Domain\Profile\Profile;
+use App\Domain\User\User;
 use App\GraphQL\TypeRegistry;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -19,59 +19,59 @@ final class UserType extends ObjectType
             'fields' => [
                 'id' => [
                     'type' => Type::nonNull(Type::id()),
-                    'resolve' => static fn (Profile $user) => $user->getId(),
+                    'resolve' => static fn (User $user) => $user->getId(),
                 ],
                 'accountId' => [
                     'type' => Type::id(),
-                    'resolve' => static fn (Profile $user) => $user->getAccount()?->getId(),
+                    'resolve' => static fn (User $user) => $user->getId(),
                 ],
                 'username' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getAccount()?->getUsername(),
+                    'resolve' => static fn (User $user) => $user->getUsername(),
                 ],
                 'role' => [
                     'type' => $typeRegistry->userRole(),
-                    'resolve' => static fn (Profile $user) => $user->getAccount()?->getRole(),
+                    'resolve' => static fn (User $user) => $user->getRole(),
                 ],
                 'salutation' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getSalutation(),
+                    'resolve' => static fn (User $user) => $user->getSalutation(),
                 ],
                 'pronouns' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getPronouns(),
+                    'resolve' => static fn (User $user) => $user->getPronouns(),
                 ],
                 'genderIdentity' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getGenderIdentity(),
+                    'resolve' => static fn (User $user) => $user->getGenderIdentity(),
                 ],
                 'firstName' => [
                     'type' => Type::nonNull(Type::string()),
-                    'resolve' => static fn (Profile $user) => $user->getFirstName(),
+                    'resolve' => static fn (User $user) => $user->getFirstName(),
                 ],
                 'middleName' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getMiddleName(),
+                    'resolve' => static fn (User $user) => $user->getMiddleName(),
                 ],
                 'lastName' => [
                     'type' => Type::nonNull(Type::string()),
-                    'resolve' => static fn (Profile $user) => $user->getLastName(),
+                    'resolve' => static fn (User $user) => $user->getLastName(),
                 ],
                 'email' => [
                     'type' => Type::nonNull(Type::string()),
-                    'resolve' => static fn (Profile $user) => $user->getEmail(),
+                    'resolve' => static fn (User $user) => $user->getEmail(),
                 ],
                 'phoneNumber' => [
                     'type' => Type::string(),
-                    'resolve' => static fn (Profile $user) => $user->getPhoneNumber(),
+                    'resolve' => static fn (User $user) => $user->getPhoneNumber(),
                 ],
                 'createdAt' => [
                     'type' => Type::nonNull($typeRegistry->dateTime()),
-                    'resolve' => static fn (Profile $user) => $user->getCreatedAt(),
+                    'resolve' => static fn (User $user) => $user->getCreatedAt(),
                 ],
                 'updatedAt' => [
                     'type' => Type::nonNull($typeRegistry->dateTime()),
-                    'resolve' => static fn (Profile $user) => $user->getUpdatedAt(),
+                    'resolve' => static fn (User $user) => $user->getUpdatedAt(),
                 ],
             ],
         ]);

@@ -2,25 +2,34 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Profile;
+namespace App\Domain\User;
 
-use App\Domain\Account\Account;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'user')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
-    fields: ['email'],
-    message: 'app.domain.profile.email.uniqueEntityMessage',
+    fields: ['username'],
+    message: 'app.domain.user.username.uniqueEntityMessage',
 )]
-final class Profile
+#[UniqueEntity(
+    fields: ['email'],
+    message: 'app.domain.user.email.uniqueEntityMessage',
+)]
+final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const string ID = 'id';
+    public const string USERNAME = 'username';
+    public const string ROLES = 'roles';
+    public const string PASSWORD = 'password';
     public const string SALUTATION = 'salutation';
     public const string PRONOUNS = 'pronouns';
     public const string GENDER_IDENTITY = 'genderIdentity';
@@ -31,47 +40,69 @@ final class Profile
     public const string PHONE_NUMBER = 'phoneNumber';
     public const string CREATED_AT = 'createdAt';
     public const string UPDATED_AT = 'updatedAt';
-    public const string ACCOUNT = 'account';
 
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'app.domain.user.username.notBlankMessage')]
+    #[Assert\Length(max: 255, maxMessage: 'app.domain.user.username.maxMessage')]
+    private ?string $username = null;
+
+    #[ORM\Column(type: Types::JSON)]
+    #[Assert\NotBlank(message: 'app.domain.user.roles.notBlankMessage')]
+    #[Assert\Type(type: 'array', message: 'app.domain.user.roles.notArrayMessage')]
+    #[Assert\Count(min: 1, max: 1, minMessage: 'app.domain.user.roles.oneMessage')]
+    #[Assert\Unique(message: 'app.domain.user.roles.notUniqueMessage')]
+    #[Assert\All([
+        new Assert\Choice(
+            choices: ['ROLE_USER', 'ROLE_ADMIN'],
+            message: 'app.domain.user.roles.choiceMessage',
+        ),
+    ])]
+    private array $roles = [];
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'app.domain.user.password.notBlankMessage')]
+    #[Assert\Length(max: 255, maxMessage: 'app.domain.user.password.maxMessage')]
+    private ?string $password = null;
+
     #[ORM\Column(length: 64, nullable: true)]
-    #[Assert\Length(max: 64, maxMessage: 'app.domain.profile.salutation.maxMessage')]
+    #[Assert\Length(max: 64, maxMessage: 'app.domain.user.salutation.maxMessage')]
     private ?string $salutation = null;
 
     #[ORM\Column(length: 64, nullable: true)]
-    #[Assert\Length(max: 64, maxMessage: 'app.domain.profile.pronouns.maxMessage')]
+    #[Assert\Length(max: 64, maxMessage: 'app.domain.user.pronouns.maxMessage')]
     private ?string $pronouns = null;
 
     #[ORM\Column(length: 64, nullable: true)]
-    #[Assert\Length(max: 64, maxMessage: 'app.domain.profile.genderIdentity.maxMessage')]
+    #[Assert\Length(max: 64, maxMessage: 'app.domain.user.genderIdentity.maxMessage')]
     private ?string $genderIdentity = null;
 
     #[ORM\Column(length: 128)]
-    #[Assert\NotBlank(message: 'app.domain.profile.firstName.notBlankMessage')]
-    #[Assert\Length(max: 128, maxMessage: 'app.domain.profile.firstName.maxMessage')]
+    #[Assert\NotBlank(message: 'app.domain.user.firstName.notBlankMessage')]
+    #[Assert\Length(max: 128, maxMessage: 'app.domain.user.firstName.maxMessage')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 128, nullable: true)]
-    #[Assert\Length(max: 128, maxMessage: 'app.domain.profile.middleName.maxMessage')]
+    #[Assert\Length(max: 128, maxMessage: 'app.domain.user.middleName.maxMessage')]
     private ?string $middleName = null;
 
     #[ORM\Column(length: 128)]
-    #[Assert\NotBlank(message: 'app.domain.profile.lastName.notBlankMessage')]
-    #[Assert\Length(max: 128, maxMessage: 'app.domain.profile.lastName.maxMessage')]
+    #[Assert\NotBlank(message: 'app.domain.user.lastName.notBlankMessage')]
+    #[Assert\Length(max: 128, maxMessage: 'app.domain.user.lastName.maxMessage')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 256)]
-    #[Assert\NotBlank(message: 'app.domain.profile.email.notBlankMessage')]
-    #[Assert\Length(max: 256, maxMessage: 'app.domain.profile.email.maxMessage')]
-    #[Assert\Email(message: 'app.domain.profile.email.emailMessage')]
+    #[Assert\NotBlank(message: 'app.domain.user.email.notBlankMessage')]
+    #[Assert\Length(max: 256, maxMessage: 'app.domain.user.email.maxMessage')]
+    #[Assert\Email(message: 'app.domain.user.email.emailMessage')]
     private ?string $email = null;
 
     #[ORM\Column(length: 64, nullable: true)]
-    #[Assert\Length(max: 64, maxMessage: 'app.domain.profile.phoneNumber.maxMessage')]
+    #[Assert\Length(max: 64, maxMessage: 'app.domain.user.phoneNumber.maxMessage')]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
@@ -79,9 +110,6 @@ final class Profile
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private DateTime $updatedAt;
-
-    #[ORM\OneToOne(targetEntity: Account::class)]
-    private ?Account $account = null;
 
     public function getId(): ?int
     {
@@ -91,6 +119,56 @@ final class Profile
     public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getRole(): string
+    {
+        return $this->getRoles()[0];
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles === [] ? ['ROLE_USER'] : $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -226,17 +304,5 @@ final class Profile
     public function updateTimestamp(): void
     {
         $this->updatedAt = new DateTime();
-    }
-
-    public function getAccount(): ?Account
-    {
-        return $this->account;
-    }
-
-    public function setAccount(Account $account): self
-    {
-        $this->account = $account;
-
-        return $this;
     }
 }

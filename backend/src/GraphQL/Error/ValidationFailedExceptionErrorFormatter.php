@@ -6,15 +6,9 @@ namespace App\GraphQL\Error;
 
 use GraphQL\Error\Error;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class ValidationFailedExceptionErrorFormatter implements ErrorFormatterInterface
 {
-    public function __construct(
-        private TranslatorInterface $translator,
-    ) {
-    }
-
     public function supports(Error $error): bool
     {
         $exception = $error->getPrevious();
@@ -28,9 +22,7 @@ final readonly class ValidationFailedExceptionErrorFormatter implements ErrorFor
         $fieldErrors = [];
 
         foreach ($exception->getViolations() as $violation) {
-            $fieldErrors[$violation->getPropertyPath()] = $this->translator->trans(
-                $violation->getMessage()
-            );
+            $fieldErrors[$violation->getPropertyPath()] = $violation->getMessage();
         }
 
         return [

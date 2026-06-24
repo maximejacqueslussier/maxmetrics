@@ -3,10 +3,10 @@ app:
         createUser:
             validationFailed: User creation validation failed.
         updateUser:
-            userNotFoundException: 'User {{ id }} not found.'
+            userNotFoundException: User {{ id }} not found.
             validationFailed: User update validation failed.
         deleteUser:
-            userNotFoundException: 'User {{ id }} not found.'
+            userNotFoundException: User {{ id }} not found.
         listUsers:
             invalidUserIdException: User IDs must be a list of integers.
             invalidForwardPaginationException:
@@ -18,7 +18,7 @@ app:
                 field: 'Argument ($field) must be: ID, CREATED_AT or UPDATED_AT.'
                 both: 'Argument ($sorts) must be an array with keys: field and direction.'
     domain:
-        account:
+        user:
             username:
                 notBlankMessage: Your username should not be blank.
                 maxMessage: Your username is too long. It should have {{ limit }} characters or less.
@@ -32,7 +32,6 @@ app:
             password:
                 notBlankMessage: Your password should not be blank.
                 maxMessage: Your password is too long. It should have {{ limit }} characters or less.
-        profile:
             salutation:
                 maxMessage: Your salutation title is too long. It should have {{ limit }} characters or less.
             pronouns:
@@ -60,7 +59,7 @@ app:
                 executorException: Error occurred when executing the GraphQL query.
         request:
             requestParser:
-                badRequestGraphQLException: '{{ object }}  must be an object.'
+                badRequestGraphQLException: '{{ object }} must be an object.'
     infrastructure:
         security:
             accessToken:

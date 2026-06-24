@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Application\User;
 
+use App\Domain\User\User;
+
 final readonly class UpdateUserResult
 {
     public function __construct(
-        private object $user,
+        private User $user,
         private array $changedFields,
     ) {
     }
 
-    public function getUser(): object
+    public function getUser(): User
     {
         return $this->user;
     }

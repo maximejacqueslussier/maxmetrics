@@ -2,29 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Profile;
+namespace App\Domain\User;
 
-use App\Application\User\UserRepository;
 use App\Application\User\ListUsers\UsersListQuery;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-final class ProfileRepository extends ServiceEntityRepository implements UserRepository
+final class UserRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
     ) {
-        parent::__construct($registry, Profile::class);
-    }
-
-    public function createUser(): object
-    {
-        return new Profile();
-    }
-
-    public function findUser(int $id): ?object
-    {
-        return $this->find($id);
+        parent::__construct($registry, User::class);
     }
 
     public function findByUsersListQuery(UsersListQuery $usersListQuery): array
@@ -46,12 +35,12 @@ final class ProfileRepository extends ServiceEntityRepository implements UserRep
 
         if ($usersListQuery->getAfterId() !== null) {
             $qb->andWhere('u.id > :afterId')
-               ->setParameter('afterId', $usersListQuery->getAfterId());
+                ->setParameter('afterId', $usersListQuery->getAfterId());
         }
 
-        $qb->setMaxResults($usersListQuery->getLimit());
-        $query = $qb->getQuery();
-
-        return $query->execute();
+        return $qb
+            ->setMaxResults($usersListQuery->getLimit())
+            ->getQuery()
+            ->getResult();
     }
 }

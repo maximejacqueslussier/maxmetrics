@@ -1,4 +1,4 @@
-import { graphqlRequest } from './request.js'
+import { graphQLRequest } from './request.js'
 
 const LIST_USERS_QUERY = `
     query ListUsers(
@@ -135,7 +135,7 @@ export async function listUsers(options = {}) {
         filter,
     }).filter(([, value]) => value !== null))
 
-    const data = await graphqlRequest(LIST_USERS_QUERY, variables)
+    const data = await graphQLRequest(LIST_USERS_QUERY, variables)
 
     return {
         users: data.users.edges.map(edge => edge.node),
@@ -144,25 +144,25 @@ export async function listUsers(options = {}) {
 }
 
 export async function getUser(id) {
-    const data = await graphqlRequest(GET_USER_QUERY, { id })
+    const data = await graphQLRequest(GET_USER_QUERY, { id })
 
     return data.users.edges[0]?.node
 }
 
 export async function createUser(input) {
-    const data = await graphqlRequest(CREATE_USER_MUTATION, { input })
+    const data = await graphQLRequest(CREATE_USER_MUTATION, { input })
     
     return data.createUser.user
 }
 
 export async function updateUser(id, input) {
-    const data = await graphqlRequest(UPDATE_USER_MUTATION, { id, input })
+    const data = await graphQLRequest(UPDATE_USER_MUTATION, { id, input })
 
     return data.updateUser.user
 }
 
 export async function deleteUser(id) {
-    const data = await graphqlRequest(DELETE_USER_MUTATION, { id })
+    const data = await graphQLRequest(DELETE_USER_MUTATION, { id })
 
     return data.deleteUser.deletedUserId
 }

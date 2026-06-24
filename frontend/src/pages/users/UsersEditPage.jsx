@@ -2,12 +2,14 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { useEffect, useState } from 'react'
 import UserForm from '../../components/users/UserForm.jsx'
 import { getUser, updateUser } from '../../graphql/users.js'
+import { GraphQLResponseError } from '../../graphql/responseError.js'
 
 export default function UsersEditPage() {
     const { id } = useParams()
     const navigate = useNavigate()
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [errors, setErrors] = useState({})
 
     useEffect(() => {
         async function loadUser() {
@@ -20,24 +22,19 @@ export default function UsersEditPage() {
         loadUser()
     }, [id])
     
-    async function handleSubmit(event) {
-        event.preventDefault()
+    async function handleSubmit(input) {
+        setErrors({})
         
-        const formData = new FormData(event.currentTarget)
-        const input = {
-            role: formData.get('role'),
-            salutation: formData.get('salutation'),
-            firstName: formData.get('firstName'),
-            middleName: formData.get('middleName'),
-            lastName: formData.get('lastName'),
-            pronouns: formData.get('pronouns'),
-            genderIdentity: formData.get('genderIdentity'),
-            email: formData.get('email'),
-            phoneNumber: formData.get('phoneNumber'),
+        try {
+            await updateUser(id, input)
+            navigate('/users')
+        } catch (error) {
+            if (error instanceof GraphQLResponseError) {
+                setErrors(error.getFieldErrors())
+
+                return
+            }
         }
-        
-        await updateUser(id, input)
-        navigate('/users')
     }
     
     return (
@@ -48,7 +45,13 @@ export default function UsersEditPage() {
             {isLoading ? (
                 <p role="status" aria-live="polite">Loading user data...</p>
             ) : (
-                <UserForm mode="edit" initialValues={user} onSubmit={handleSubmit} />
+                <UserForm
+                    mode="edit"
+                    initialValues={user}
+                    errors={errors}
+                    onSubmit={handleSubmit}
+                    onReset={() => setErrors({})}
+                />
             )}
         </section>
     )

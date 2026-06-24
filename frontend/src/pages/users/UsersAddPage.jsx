@@ -1,37 +1,38 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import UserForm from '../../components/users/UserForm.jsx'
 import { createUser } from '../../graphql/users.js'
+import { GraphQLResponseError } from '../../graphql/responseError.js'
 
 export default function UsersAddPage() {
     const navigate = useNavigate()
+    const [errors, setErrors] = useState({})
     
-    async function handleSubmit(event) {
-        event.preventDefault()
+    async function handleSubmit(input) {
+        setErrors({})
         
-        const formData = new FormData(event.currentTarget)
-        const input = {
-            username: formData.get('username'),
-            password: formData.get('password'),
-            role: formData.get('role'),
-            salutation: formData.get('salutation'),
-            firstName: formData.get('firstName'),
-            middleName: formData.get('middleName'),
-            lastName: formData.get('lastName'),
-            pronouns: formData.get('pronouns'),
-            genderIdentity: formData.get('genderIdentity'),
-            email: formData.get('email'),
-            phoneNumber: formData.get('phoneNumber'),
+        try {
+            await createUser(input)
+            navigate('/users')
+        } catch (error) {
+            if (error instanceof GraphQLResponseError) {
+                setErrors(error.getFieldErrors())
+
+                return
+            }
         }
-        
-        await createUser(input)
-        navigate('/users')
     }
     
     return (
         <section>
             <h1>Add a new user</h1>
             <Link to="/users">Back to users</Link>
-            <UserForm mode="add" onSubmit={handleSubmit} />
+            <UserForm
+                mode="add"
+                errors={errors}
+                onSubmit={handleSubmit}
+                onReset={() => setErrors({})}
+            />
         </section>
     )
 }
