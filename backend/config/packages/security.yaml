@@ -16,7 +16,7 @@ security:
             lazy: true
             provider: app_user_provider
             access_token:
-                token_handler: App\Infrastructure\Security\JwtAccessTokenHandler
+                token_handler: App\Infrastructure\Authentication\JwtHandler
 
     access_control:
         - { path: ^/graphql$, roles: PUBLIC_ACCESS }

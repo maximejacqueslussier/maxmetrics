@@ -17,6 +17,8 @@ app:
                 direction: 'Argument ($direction) for {{ field }} must be: ASC or DESC.'
                 field: 'Argument ($field) must be: ID, CREATED_AT or UPDATED_AT.'
                 both: 'Argument ($sorts) must be an array with keys: field and direction.'
+        login:
+            badCredentials: Bad credentials. Try again.
     domain:
         user:
             username:
@@ -54,6 +56,9 @@ app:
             phoneNumber:
                 maxMessage: Your phone number is too long. It should have {{ limit }} characters or less.
     graphql:
+        authorization:
+            forbiddenException: You do not have permission to perform this action.
+            unauthenticatedException: Authentication is required.
         execution:
             executor:
                 executorException: Error occurred when executing the GraphQL query.
@@ -61,7 +66,7 @@ app:
             requestParser:
                 badRequestGraphQLException: '{{ object }} must be an object.'
     infrastructure:
-        security:
+        authentication:
             accessToken:
                 expired: Expired credentials.
                 invalid: Invalid credentials.

@@ -45,7 +45,7 @@ final readonly class UserMutationResolver
 
         $result = $this->updateUser->execute(
             $id,
-            $input['role'],
+            $input['role'] ?? null,
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
             $input['genderIdentity'] ?? null,

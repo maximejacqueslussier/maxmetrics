@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security;
+namespace App\Infrastructure\Authentication;
 
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
@@ -16,7 +16,7 @@ use Throwable;
 use function in_array;
 use function is_array;
 
-final readonly class JwtAccessTokenHandler implements AccessTokenHandlerInterface
+final readonly class JwtHandler implements AccessTokenHandlerInterface
 {
     public function __construct(
         private TranslatorInterface $translator,
@@ -32,25 +32,24 @@ final readonly class JwtAccessTokenHandler implements AccessTokenHandlerInterfac
             $payload = JWT::decode($accessToken, new Key($this->jwtSecret, 'HS256'));
 
             if ((string) $payload?->iss !== $this->jwtIssuer) {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.security.accessToken.invalidIssuer'));
+                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalidIssuer'));
             }
 
             $audience = $payload?->aud ?? null;
-            $audiences = is_array($audience) ? $audience : [$audience];
 
-            if (!in_array($this->jwtAudience, $audiences)) {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.security.accessToken.invalidAudience'));
+            if ($this->jwtAudience !== $audience) {
+                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalidAudience'));
             }
 
-            if ((string) $payload?->sub !== '') {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.security.accessToken.missingSubject'));
+            if (((string) $payload?->sub) === '') {
+                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.missingSubject'));
             }
 
             return new UserBadge((string) $payload->sub);
         } catch (ExpiredException) {
-            throw new BadCredentialsException($this->translator->trans('app.infrastructure.security.accessToken.expired'));
+            throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.expired'));
         } catch (Throwable) {
-            throw new BadCredentialsException($this->translator->trans('app.infrastructure.security.accessToken.invalid'));
+            throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalid'));
         }
     }
 }

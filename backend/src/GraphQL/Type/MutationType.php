@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type;
 
+use App\GraphQL\Authorization\GraphQLAuthorizationGuard;
 use App\GraphQL\TypeRegistry;
 use App\GraphQL\Resolver\Authentication\AuthenticationMutationResolver;
 use App\GraphQL\Resolver\User\UserMutationResolver;
@@ -16,6 +17,7 @@ final class MutationType extends ObjectType
         TypeRegistry $typeRegistry,
         UserMutationResolver $userResolver,
         AuthenticationMutationResolver $authenticationResolver,
+        GraphQLAuthorizationGuard $graphQLAuthorizationGuard,
     ) {
         parent::__construct([
             'name' => 'Mutation',
@@ -25,7 +27,17 @@ final class MutationType extends ObjectType
                     'args' => [
                         'input' => Type::nonNull($typeRegistry->createUserInput()),
                     ],
-                    'resolve' => [$userResolver, 'createUser'],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $userResolver,
+                        $graphQLAuthorizationGuard,
+                    ): array {
+                        $graphQLAuthorizationGuard->requireAdmin();
+
+                        return $userResolver->createUser($root, $args);
+                    },
                 ],
                 'updateUser' => [
                     'type' => $typeRegistry->updateUserPayload(),
@@ -33,14 +45,34 @@ final class MutationType extends ObjectType
                         'id' => Type::nonNull(Type::id()),
                         'input' => Type::nonNull($typeRegistry->updateUserInput()),
                     ],
-                    'resolve' => [$userResolver, 'updateUser'],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $userResolver,
+                        $graphQLAuthorizationGuard,
+                    ): array {
+                        $graphQLAuthorizationGuard->requireAdmin();
+
+                        return $userResolver->updateUser($root, $args);
+                    },
                 ],
                 'deleteUser' => [
                     'type' => $typeRegistry->deleteUserPayload(),
                     'args' => [
                         'id' => Type::nonNull(Type::id()),
                     ],
-                    'resolve' => [$userResolver, 'deleteUser'],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $userResolver,
+                        $graphQLAuthorizationGuard,
+                    ): array {
+                        $graphQLAuthorizationGuard->requireAdmin();
+
+                        return $userResolver->deleteUser($root, $args);
+                    },
                 ],
                 'login' => [
                     'type' => $typeRegistry->loginPayload(),

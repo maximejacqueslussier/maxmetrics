@@ -14,6 +14,10 @@ parameters:
         App\Application\User\UserNotFoundException:
             code: USER_NOT_FOUND
             field: id
+        App\GraphQL\Authorization\UnauthenticatedException:
+            code: UNAUTHENTICATED
+        App\GraphQL\Authorization\ForbiddenException:
+            code: FORBIDDEN
 
 services:
     # default configuration for services in *this* file
@@ -41,8 +45,15 @@ services:
             $errorFormatters: !tagged_iterator { tag: app.graphql.error_formatter, default_priority_method: getPriority }
             $isDebug: '%kernel.debug%'
     
-    App\Infrastructure\Security\JwtAccessTokenHandler:
+    App\Infrastructure\Authentication\JwtHandler:
         arguments:
             $jwtSecret: '%env(JWT_SECRET)%'
             $jwtIssuer: '%env(JWT_ISSUER)%'
             $jwtAudience: '%env(JWT_AUDIENCE)%'
+    
+    App\Infrastructure\Authentication\JwtIssuer:
+        arguments:
+            $jwtSecret: '%env(JWT_SECRET)%'
+            $jwtIssuer: '%env(JWT_ISSUER)%'
+            $jwtAudience: '%env(JWT_AUDIENCE)%'
+            $jwtTtl: '%env(JWT_TTL)%'
