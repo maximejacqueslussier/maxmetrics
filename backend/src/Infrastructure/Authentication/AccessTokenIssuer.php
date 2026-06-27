@@ -4,7 +4,7 @@ namespace App\Infrastructure\Authentication;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface TokenIssuer
+interface AccessTokenIssuer
 {
     public function issue(UserInterface $user): array;
 }

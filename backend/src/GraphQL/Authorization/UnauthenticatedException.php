@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Authorization;
 
-use RuntimeException;
+use Exception;
 
-final class UnauthenticatedException extends RuntimeException
+final class UnauthenticatedException extends Exception
 {
 }

@@ -1,9 +1,17 @@
 import { GraphQLResponseError } from './responseError.js'
 
-export async function graphQLRequest(query, variables = {}) {
+export async function graphQLRequest(query, variables = {}, accessToken = null) {
+    const headers = {
+        'Content-Type': 'application/json',
+    }
+
+    if (accessToken) {
+        headers.Authorization = `Bearer ${accessToken}`
+    }
+
     const response = await fetch('/graphql', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ query, variables }),
     })
     

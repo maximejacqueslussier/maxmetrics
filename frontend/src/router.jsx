@@ -5,43 +5,43 @@ import UsersPage from './pages/UsersPage.jsx'
 import UsersAddPage from './pages/users/UsersAddPage.jsx'
 import UsersEditPage from './pages/users/UsersEditPage.jsx'
 import LoginPage from './pages/authentication/LoginPage.jsx'
-import LoginSuccessPage from './pages/authentication/LoginSuccessPage.jsx'
+import { RequireAdmin } from './authentication/RequireRole.jsx'
 
 export const router = createBrowserRouter([
     {
         path: '/',
         Component: App,
-        handle: { pageTitle: 'MaxFit' },
+        handle: { pageTitle: 'MaxMetrics' },
         children: [
             {
                 index: true,
                 Component: HomePage,
-                handle: { pageTitle: 'Home | MaxFit' }
-            },
-            {
-                path: 'users',
-                Component: UsersPage,
-                handle: { pageTitle: 'Users | MaxFit' }
-            },
-            {
-                path: 'users/add',
-                Component: UsersAddPage,
-                handle: { pageTitle: 'Add a new user | Users | MaxFit' }
-            },
-            {
-                path: 'users/:id/edit',
-                Component: UsersEditPage,
-                handle: { pageTitle: 'Edit user | Users | MaxFit' }
+                handle: { pageTitle: 'Home | MaxMetrics' }
             },
             {
                 path: '/login',
                 Component: LoginPage,
-                handle: { pageTitle: 'Login | MaxFit' }
+                handle: { pageTitle: 'Login | MaxMetrics' }
             },
             {
-                path: '/login/success',
-                Component: LoginSuccessPage,
-                handle: { pageTitle: 'Login successful | MaxFit' }
+                Component: RequireAdmin,
+                children: [
+                    {
+                        path: 'users',
+                        Component: UsersPage,
+                        handle: { pageTitle: 'Users | MaxMetrics' }
+                    },
+                    {
+                        path: 'users/add',
+                        Component: UsersAddPage,
+                        handle: { pageTitle: 'Add a new user | Users | MaxMetrics' }
+                    },
+                    {
+                        path: 'users/:id/edit',
+                        Component: UsersEditPage,
+                        handle: { pageTitle: 'Edit user | Users | MaxMetrics' }
+                    },
+                ],
             }
         ],
     },

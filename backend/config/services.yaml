@@ -18,6 +18,8 @@ parameters:
             code: UNAUTHENTICATED
         App\GraphQL\Authorization\ForbiddenException:
             code: FORBIDDEN
+        App\Application\Authentication\BadCredentialsException:
+            code: BAD_CREDENTIAL
 
 services:
     # default configuration for services in *this* file

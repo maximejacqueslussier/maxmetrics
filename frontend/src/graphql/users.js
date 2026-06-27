@@ -120,7 +120,7 @@ const DELETE_USER_MUTATION = `
     }
 `
 
-export async function listUsers(options = {}) {
+export async function listUsers(accessToken, options = {}) {
     const {
         first = 20,
         after = null,
@@ -135,7 +135,7 @@ export async function listUsers(options = {}) {
         filter,
     }).filter(([, value]) => value !== null))
 
-    const data = await graphQLRequest(LIST_USERS_QUERY, variables)
+    const data = await graphQLRequest(LIST_USERS_QUERY, variables, accessToken)
 
     return {
         users: data.users.edges.map(edge => edge.node),
@@ -143,26 +143,26 @@ export async function listUsers(options = {}) {
     }
 }
 
-export async function getUser(id) {
-    const data = await graphQLRequest(GET_USER_QUERY, { id })
+export async function getUser(accessToken, id) {
+    const data = await graphQLRequest(GET_USER_QUERY, { id }, accessToken)
 
     return data.users.edges[0]?.node
 }
 
-export async function createUser(input) {
-    const data = await graphQLRequest(CREATE_USER_MUTATION, { input })
+export async function createUser(accessToken, input) {
+    const data = await graphQLRequest(CREATE_USER_MUTATION, { input }, accessToken)
     
     return data.createUser.user
 }
 
-export async function updateUser(id, input) {
-    const data = await graphQLRequest(UPDATE_USER_MUTATION, { id, input })
+export async function updateUser(accessToken, id, input) {
+    const data = await graphQLRequest(UPDATE_USER_MUTATION, { id, input }, accessToken)
 
     return data.updateUser.user
 }
 
-export async function deleteUser(id) {
-    const data = await graphQLRequest(DELETE_USER_MUTATION, { id })
+export async function deleteUser(accessToken, id) {
+    const data = await graphQLRequest(DELETE_USER_MUTATION, { id }, accessToken)
 
     return data.deleteUser.deletedUserId
 }

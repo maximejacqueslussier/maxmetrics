@@ -24,7 +24,7 @@ final readonly class AuthenticationMutationResolver
 
         return [
             'user' => $result->getUser(),
-            'token' => $result->getToken(),
+            'accessToken' => $result->getAccessToken(),
             'expiresAt' => $result->getExpiresAt(),
         ];
     }

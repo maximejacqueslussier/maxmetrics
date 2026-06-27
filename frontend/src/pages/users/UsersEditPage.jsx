@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import UserForm from '../../components/users/UserForm.jsx'
 import { getUser, updateUser } from '../../graphql/users.js'
 import { GraphQLResponseError } from '../../graphql/responseError.js'
+import { useAuth } from '../../authentication/AuthContext.jsx'
 
 export default function UsersEditPage() {
     const { id } = useParams()
     const navigate = useNavigate()
+    const { accessToken } = useAuth()
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [errors, setErrors] = useState({})
@@ -14,19 +16,19 @@ export default function UsersEditPage() {
     useEffect(() => {
         async function loadUser() {
             setIsLoading(true)
-            setUser(await getUser(id))
+            setUser(await getUser(accessToken, id))
             setIsLoading(false)
         }
 
-        document.title = `Edit user ${id} | Users | MaxFit`
+        document.title = `Edit user ${id} | Users | MaxMetrics`
         loadUser()
-    }, [id])
+    }, [accessToken, id])
     
     async function handleSubmit(input) {
         setErrors({})
         
         try {
-            await updateUser(id, input)
+            await updateUser(accessToken, id, input)
             navigate('/users')
         } catch (error) {
             if (error instanceof GraphQLResponseError) {

@@ -3,16 +3,18 @@ import { Link, useNavigate } from 'react-router'
 import UserForm from '../../components/users/UserForm.jsx'
 import { createUser } from '../../graphql/users.js'
 import { GraphQLResponseError } from '../../graphql/responseError.js'
+import { useAuth } from '../../authentication/AuthContext.jsx'
 
 export default function UsersAddPage() {
     const navigate = useNavigate()
+    const { accessToken } = useAuth()
     const [errors, setErrors] = useState({})
     
     async function handleSubmit(input) {
         setErrors({})
         
         try {
-            await createUser(input)
+            await createUser(accessToken, input)
             navigate('/users')
         } catch (error) {
             if (error instanceof GraphQLResponseError) {

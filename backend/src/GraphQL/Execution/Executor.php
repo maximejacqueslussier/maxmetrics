@@ -28,27 +28,23 @@ final readonly class Executor
     public function executeQuery(Request $request): ExecutionResult
     {
         try {
-            $result = $this->entityManager->wrapInTransaction(function () use ($request) {
-                $result = GraphQL::executeQuery(
-                    ($this->schema)(),
-                    $request->getQuery(),
-                    null,
-                    null,
-                    $request->getVariables(),
-                    $request->getOperationName(),
+            $result = GraphQL::executeQuery(
+                ($this->schema)(),
+                $request->getQuery(),
+                null,
+                null,
+                $request->getVariables(),
+                $request->getOperationName(),
+            );
+
+            $result->setErrorFormatter([$this->errorFormatterChain, 'format']);
+
+            if (count($result->errors) !== 0) {
+                throw new ExecutorException(
+                    $result,
+                    $this->translator->trans('app.graphql.execution.executor.executorException'),
                 );
-
-                $result->setErrorFormatter([$this->errorFormatterChain, 'format']);
-
-                if (count($result->errors) !== 0) {
-                    throw new ExecutorException(
-                        $result,
-                        $this->translator->trans('app.graphql.execution.executor.executorException'),
-                    );
-                }
-
-                return $result;
-            });
+            }
 
             return $result;
         } catch (ExecutorException $e) {

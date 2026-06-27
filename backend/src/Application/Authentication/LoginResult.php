@@ -11,7 +11,7 @@ final class LoginResult
 {
     public function __construct(
         private User $user,
-        private string $token,
+        private string $accessToken,
         private DateTime $expiresAt,
     ) {
     }
@@ -21,9 +21,9 @@ final class LoginResult
         return $this->user;
     }
 
-    public function getToken(): string
+    public function getAccessToken(): string
     {
-        return $this->token;
+        return $this->accessToken;
     }
 
     public function getExpiresAt(): DateTime

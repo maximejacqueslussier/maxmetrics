@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 use function time;
 
-final readonly class JwtIssuer implements TokenIssuer
+final readonly class JwtIssuer implements AccessTokenIssuer
 {
     public function __construct(
         private string $jwtSecret,
@@ -32,7 +32,7 @@ final readonly class JwtIssuer implements TokenIssuer
         ];
 
         return [
-            'token' => JWT::encode($payload, $this->jwtSecret, 'HS256'),
+            'accessToken' => JWT::encode($payload, $this->jwtSecret, 'HS256'),
             'expiresAt' => $now + $this->jwtTtl,
         ];
     }

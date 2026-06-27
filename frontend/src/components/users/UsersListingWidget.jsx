@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { deleteUser, listUsers } from '../../graphql/users'
-import DeleteUserDialog from './DeleteUserDialog'
+import { deleteUser, listUsers } from '../../graphql/users.js'
+import DeleteUserDialog from './DeleteUserDialog.jsx'
+import { useAuth } from '../../authentication/AuthContext.jsx'
 
 export default function UsersListingWidget() {
     const [users, setUsers] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
+    const { accessToken } = useAuth()
     
     useEffect(() => {
         async function loadUsers() {
-            const result = await listUsers()
+            const result = await listUsers(accessToken)
             setUsers(result.users)
         }
         
         loadUsers()
-    }, [])
+    }, [accessToken])
     
     return (
         <>
@@ -64,7 +66,7 @@ export default function UsersListingWidget() {
                 user={selectedUser}
                 onCancel={() => setSelectedUser(null)}
                 onConfirm={async (id) => {
-                    await deleteUser(id)
+                    await deleteUser(accessToken, id)
                     setUsers(currentUsers => currentUsers.filter(user => user.id !== id))
                     setSelectedUser(null)
                 }} />

@@ -19,7 +19,7 @@ final class LoginPayloadType extends ObjectType
                 'user' => [
                     'type' => Type::nonNull($typeRegistry->user()),
                 ],
-                'token' => [
+                'accessToken' => [
                     'type' => Type::nonNull(Type::string()),
                 ],
                 'expiresAt' => [

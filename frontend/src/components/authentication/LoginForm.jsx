@@ -1,27 +1,26 @@
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useState } from 'react'
+import { useAuth } from '../../authentication/AuthContext.jsx'
 import { GraphQLResponseError } from '../../graphql/responseError.js'
 
 export default function LoginForm () {
     const navigate = useNavigate()
-    const [errors, setErrors] = useState({})
+    const { login } = useAuth()
+    const [error, setError] = useState('')
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     async function handleSubmit(event) {
         event.preventDefault()
 
-        setErrors({})
+        setError('')
         const input = Object.fromEntries(new FormData(event.currentTarget).entries())
 
         try {
             await login(input)
-            navigate('/login/success', {
-                replace: true,
-                state: { destination: '/' },
-            })
+            navigate('/')
         } catch (error) {
             if (error instanceof GraphQLResponseError) {
-                setErrors(error.getFieldErrors())
+                setError(error.errors[0]?.message)
             
                 return
             }
@@ -30,39 +29,30 @@ export default function LoginForm () {
 
     return (
         <>
-            {Object.keys(errors).length > 0 && (
-                <p role="alert">Please fix the errors below.</p>
+            {error.length > 0 && (
+                <p role="alert" tabIndex="-1">{error}</p>
             )}
-            <form onSubmit={handleSubmit} onReset={() => setErrors({})}>
+            <form onSubmit={handleSubmit} onReset={() => setError('')}>
                 <fieldset>
                     <legend>Login</legend>
                     <label htmlFor="username">Username</label>
                     <input type="text"
                         id="username"
-                        aria-invalid={errors.username ? 'true' : undefined}
-                        aria-describedby={errors.username ? 'usernameError' : undefined}
+                        name="username"
                         autoComplete="username"
                         maxLength="255" />
-                    {errors.username && (
-                        <p id="usernameError">{errors.username}</p>
-                    )}
 
                     <label htmlFor="password">Password</label>
                     <input type={isPasswordVisible ? 'text' : 'password'}
                         id="password"
                         name="password"
-                        aria-invalid={errors.password ? 'true' : undefined}
-                        aria-describedby={errors.password ? 'passwordError' : undefined}
-                        autoComplete="off"
+                        autoComplete="current-password"
                         maxLength="255" />
                     <button type="button"
                         aria-controls="password"
                         onClick={() => setIsPasswordVisible((visible) => !visible)}>
                         {isPasswordVisible ? 'Hide password' : 'Show password'}
                     </button>
-                    {errors.password && (
-                        <p id="passwordError">{errors.password}</p>
-                    )}
 
                     <button type="submit">Login</button>
                     <button type="reset">Reset</button>
