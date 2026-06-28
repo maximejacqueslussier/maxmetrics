@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'user')]
+#[ORM\UniqueConstraint(name: 'UNIQ_USER_USERNAME', columns: ['username'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', columns: ['email'])]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
     fields: ['username'],
