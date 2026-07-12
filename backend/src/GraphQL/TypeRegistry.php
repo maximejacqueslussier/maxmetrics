@@ -11,6 +11,7 @@ use App\GraphQL\Input\User\UserFilterInputType;
 use App\GraphQL\Input\User\UserOrderByInputType;
 use App\GraphQL\Type\PageInfoType;
 use App\GraphQL\Type\Authentication\LoginPayloadType;
+use App\GraphQL\Type\Authentication\RefreshTokenPayloadType;
 use App\GraphQL\Type\Definition\DateTimeType;
 use App\GraphQL\Type\Definition\OrderByDirectionType;
 use App\GraphQL\Type\User\CreateUserPayloadType;
@@ -109,5 +110,10 @@ final class TypeRegistry
     public function loginInput(): LoginInputType
     {
         return $this->types['loginInput'] ??= new LoginInputType();
+    }
+
+    public function refreshTokenPayload(): RefreshTokenPayloadType
+    {
+        return $this->types['refreshTokenPayload'] ??= new RefreshTokenPayloadType($this);
     }
 }

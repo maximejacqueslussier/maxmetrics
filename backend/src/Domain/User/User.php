@@ -28,27 +28,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public const string ID = 'id';
-    public const string USERNAME = 'username';
-    public const string ROLES = 'roles';
-    public const string PASSWORD = 'password';
-    public const string SALUTATION = 'salutation';
-    public const string PRONOUNS = 'pronouns';
-    public const string GENDER_IDENTITY = 'genderIdentity';
-    public const string FIRST_NAME = 'firstName';
-    public const string MIDDLE_NAME = 'middleName';
-    public const string LAST_NAME = 'lastName';
-    public const string EMAIL = 'email';
-    public const string PHONE_NUMBER = 'phoneNumber';
-    public const string CREATED_AT = 'createdAt';
-    public const string UPDATED_AT = 'updatedAt';
-
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'app.domain.user.username.notBlankMessage')]
     #[Assert\Length(max: 255, maxMessage: 'app.domain.user.username.maxMessage')]
     private ?string $username = null;

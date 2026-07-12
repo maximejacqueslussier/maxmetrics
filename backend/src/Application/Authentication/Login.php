@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Authentication;
 
+use App\Domain\Authentication\RefreshTokenFactory;
 use App\Domain\User\UserRepository;
-use App\Infrastructure\Authentication\AccessTokenIssuer;
-use DateTime;
+use App\Infrastructure\Authentication\JwtIssuer;
+use App\Infrastructure\Authentication\RefreshTokenIssuer;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -14,9 +16,12 @@ final readonly class Login
 {
     public function __construct(
         private UserRepository $repository,
-        private AccessTokenIssuer $accessTokenIssuer,
+        private JwtIssuer $jwtIssuer,
+        private RefreshTokenIssuer $refreshTokenIssuer,
         private TranslatorInterface $translator,
         private UserPasswordHasherInterface $passwordHasher,
+        private RefreshTokenFactory $refreshTokenFactory,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -33,10 +38,25 @@ final readonly class Login
         }
 
         [
+            'rawToken' => $rawToken,
+            'hashedToken' => $hashedToken,
+        ] = $this->refreshTokenIssuer->issue();
+
+        $refreshToken = $this->refreshTokenFactory->create($hashedToken, $user);
+        $this->entityManager->persist($refreshToken);
+        $this->entityManager->flush();
+
+        [
             'accessToken' => $accessToken,
             'expiresAt' => $expiresAt,
-        ] = $this->accessTokenIssuer->issue($user);
+        ] = $this->jwtIssuer->issue($user);
 
-        return new LoginResult($user, $accessToken, (new DateTime())->setTimestamp($expiresAt));
+        return new LoginResult(
+            $user,
+            $accessToken,
+            $expiresAt,
+            $rawToken,
+            $refreshToken->getExpiresAt()
+        );
     }
 }

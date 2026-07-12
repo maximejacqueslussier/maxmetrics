@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type;
 
-use App\GraphQL\Authorization\GraphQLAuthorizationGuard;
+use App\GraphQL\Authorization\AuthorizationGuard;
 use App\GraphQL\TypeRegistry;
 use App\GraphQL\Resolver\Authentication\AuthenticationMutationResolver;
 use App\GraphQL\Resolver\User\UserMutationResolver;
@@ -17,7 +17,7 @@ final class MutationType extends ObjectType
         TypeRegistry $typeRegistry,
         UserMutationResolver $userResolver,
         AuthenticationMutationResolver $authenticationResolver,
-        GraphQLAuthorizationGuard $graphQLAuthorizationGuard,
+        AuthorizationGuard $authorizationGuard,
     ) {
         parent::__construct([
             'name' => 'Mutation',
@@ -32,9 +32,9 @@ final class MutationType extends ObjectType
                         array $args,
                     ) use (
                         $userResolver,
-                        $graphQLAuthorizationGuard,
+                        $authorizationGuard,
                     ): array {
-                        $graphQLAuthorizationGuard->requireAdmin();
+                        $authorizationGuard->requireAdmin();
 
                         return $userResolver->createUser($root, $args);
                     },
@@ -50,9 +50,9 @@ final class MutationType extends ObjectType
                         array $args,
                     ) use (
                         $userResolver,
-                        $graphQLAuthorizationGuard,
+                        $authorizationGuard,
                     ): array {
-                        $graphQLAuthorizationGuard->requireAdmin();
+                        $authorizationGuard->requireAdmin();
 
                         return $userResolver->updateUser($root, $args);
                     },
@@ -67,9 +67,9 @@ final class MutationType extends ObjectType
                         array $args,
                     ) use (
                         $userResolver,
-                        $graphQLAuthorizationGuard,
+                        $authorizationGuard,
                     ): array {
-                        $graphQLAuthorizationGuard->requireAdmin();
+                        $authorizationGuard->requireAdmin();
 
                         return $userResolver->deleteUser($root, $args);
                     },
@@ -80,6 +80,13 @@ final class MutationType extends ObjectType
                         'input' => Type::nonNull($typeRegistry->loginInput())
                     ],
                     'resolve' => [$authenticationResolver, 'login'],
+                ],
+                'refreshToken' => [
+                    'type' => $typeRegistry->refreshTokenPayload(),
+                    'resolve' => [$authenticationResolver, 'refreshToken'],
+                ],
+                'logout' => [
+                    'type' => $typeRegistry->
                 ],
             ],
         ]);

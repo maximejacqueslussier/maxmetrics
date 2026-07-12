@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type;
 
-use App\GraphQL\Authorization\GraphQLAuthorizationGuard;
+use App\GraphQL\Authorization\AuthorizationGuard;
 use App\GraphQL\TypeRegistry;
 use App\GraphQL\Resolver\User\UserQueryResolver;
 use GraphQL\Type\Definition\ObjectType;
@@ -15,7 +15,7 @@ final class QueryType extends ObjectType
     public function __construct(
         TypeRegistry $typeRegistry,
         UserQueryResolver $userQueryResolver,
-        GraphQLAuthorizationGuard $graphQLAuthorizationGuard,
+        AuthorizationGuard $authorizationGuard,
     ) {
         parent::__construct([
             'name' => 'Query',
@@ -42,10 +42,10 @@ final class QueryType extends ObjectType
                         mixed $root,
                         array $args,
                     ) use (
-                        $graphQLAuthorizationGuard,
+                        $authorizationGuard,
                         $userQueryResolver,
                     ): iterable {
-                        $graphQLAuthorizationGuard->requireAdmin();
+                        $authorizationGuard->requireAdmin();
 
                         return $userQueryResolver->listUsers($root, $args);
                     },
