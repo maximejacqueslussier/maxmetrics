@@ -124,6 +124,11 @@ final class RefreshToken
         $this->replacedBy = $replacement;
     }
 
+    public function revoke(): void
+    {
+        $this->revokedAt = new DateTimeImmutable();
+    }
+
     public function getUser(): ?User
     {
         return $this->user;

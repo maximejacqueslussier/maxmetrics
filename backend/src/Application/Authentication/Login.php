@@ -52,7 +52,6 @@ final readonly class Login
         ] = $this->jwtIssuer->issue($user);
 
         return new LoginResult(
-            $user,
             $accessToken,
             $expiresAt,
             $rawToken,

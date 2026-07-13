@@ -76,6 +76,9 @@ app:
         request:
             requestParser:
                 badRequestGraphQLException: '{{ object }} must be an object.'
+        resolver:
+            authentication:
+                unauthenticatedException: Authentication is required.
     infrastructure:
         authentication:
             accessToken:

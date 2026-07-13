@@ -86,7 +86,8 @@ final class MutationType extends ObjectType
                     'resolve' => [$authenticationResolver, 'refreshToken'],
                 ],
                 'logout' => [
-                    'type' => $typeRegistry->
+                    'type' => $typeRegistry->logoutPayload(),
+                    'resolve' => [$authenticationResolver, 'logout'],
                 ],
             ],
         ]);

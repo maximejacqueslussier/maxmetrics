@@ -5,6 +5,10 @@ function RequireRole ({ requiredRole }) {
     const { status, user } = useAuth()
     const location = useLocation()
 
+    if (status === 'loading') {
+        return null
+    }
+
     if (status !== 'authenticated') {
         return (
             <Navigate to="/login" replace state={{ destination: location.pathname }} />

@@ -5,7 +5,7 @@ import UsersPage from './pages/UsersPage.jsx'
 import UsersAddPage from './pages/users/UsersAddPage.jsx'
 import UsersEditPage from './pages/users/UsersEditPage.jsx'
 import LoginPage from './pages/authentication/LoginPage.jsx'
-import { RequireAdmin } from './authentication/RequireRole.jsx'
+import { RequireAdmin, RequireUser } from './authentication/RequireRole.jsx'
 
 export const router = createBrowserRouter([
     {
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
                 handle: { pageTitle: 'Home | MaxMetrics' }
             },
             {
-                path: '/login',
+                path: 'login',
                 Component: LoginPage,
                 handle: { pageTitle: 'Login | MaxMetrics' }
             },

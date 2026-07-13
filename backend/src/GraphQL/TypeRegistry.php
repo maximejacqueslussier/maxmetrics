@@ -12,6 +12,7 @@ use App\GraphQL\Input\User\UserOrderByInputType;
 use App\GraphQL\Type\PageInfoType;
 use App\GraphQL\Type\Authentication\LoginPayloadType;
 use App\GraphQL\Type\Authentication\RefreshTokenPayloadType;
+use App\GraphQL\Type\Authentication\LogoutPayloadType;
 use App\GraphQL\Type\Definition\DateTimeType;
 use App\GraphQL\Type\Definition\OrderByDirectionType;
 use App\GraphQL\Type\User\CreateUserPayloadType;
@@ -115,5 +116,10 @@ final class TypeRegistry
     public function refreshTokenPayload(): RefreshTokenPayloadType
     {
         return $this->types['refreshTokenPayload'] ??= new RefreshTokenPayloadType($this);
+    }
+
+    public function logoutPayload(): LogoutPayloadType
+    {
+        return $this->types['logoutPayload'] ??= new LogoutPayloadType();
     }
 }

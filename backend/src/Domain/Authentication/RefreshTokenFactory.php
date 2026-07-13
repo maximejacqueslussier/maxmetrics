@@ -27,7 +27,7 @@ final readonly class RefreshTokenFactory
             ->setTokenHash($hashedToken)
             ->setExpiresAt($expiresAt)
             ->setUser($user);
-        
+
         return $refreshToken;
     }
 }

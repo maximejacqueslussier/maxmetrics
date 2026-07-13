@@ -29,28 +29,38 @@ final readonly class RotateRefreshToken
     public function execute(?string $rawToken = null): RotateRefreshTokenResult
     {
         if ($rawToken === null || $rawToken === '') {
-            throw new InvalidRefreshTokenException($this->translator->trans('app.application.rotateRefreshToken.notFoundMessage'));
+            throw new InvalidRefreshTokenException(
+                $this->translator->trans('app.application.rotateRefreshToken.notFoundMessage'),
+            );
         }
 
         $tokenHash = $this->refreshTokenHasher->hash($rawToken);
         $refreshToken = $this->repository->findOneByTokenHash($tokenHash);
 
         if (!$refreshToken) {
-            throw new InvalidRefreshTokenException($this->translator->trans('app.application.rotateRefreshToken.notFoundMessage'));
+            throw new InvalidRefreshTokenException(
+                $this->translator->trans('app.application.rotateRefreshToken.notFoundMessage'),
+            );
         }
 
         $now = new DateTime();
 
         if ($refreshToken->getExpiresAt() <= $now) {
-            throw new InvalidRefreshTokenException($this->translator->trans('app.application.rotateRefreshToken.expiredMessage'));
+            throw new InvalidRefreshTokenException(
+                $this->translator->trans('app.application.rotateRefreshToken.expiredMessage'),
+            );
         }
 
         if ($refreshToken->getRevokedAt() !== null) {
-            throw new InvalidRefreshTokenException($this->translator->trans('app.application.rotateRefreshToken.revokedMessage'));
+            throw new InvalidRefreshTokenException(
+                $this->translator->trans('app.application.rotateRefreshToken.revokedMessage'),
+            );
         }
 
         if ($refreshToken->getReplacedBy() !== null) {
-            throw new InvalidRefreshTokenException($this->translator->trans('app.application.rotateRefreshToken.replacedMessage'));
+            throw new InvalidRefreshTokenException(
+                $this->translator->trans('app.application.rotateRefreshToken.replacedMessage'),
+            );
         }
 
         [

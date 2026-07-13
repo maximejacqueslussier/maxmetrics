@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type;
 
+use App\Domain\User\User;
 use App\GraphQL\Authorization\AuthorizationGuard;
 use App\GraphQL\TypeRegistry;
+use App\GraphQL\Resolver\Authentication\AuthenticationQueryResolver;
 use App\GraphQL\Resolver\User\UserQueryResolver;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -15,6 +17,7 @@ final class QueryType extends ObjectType
     public function __construct(
         TypeRegistry $typeRegistry,
         UserQueryResolver $userQueryResolver,
+        AuthenticationQueryResolver $authenticationQueryResolver,
         AuthorizationGuard $authorizationGuard,
     ) {
         parent::__construct([
@@ -48,6 +51,17 @@ final class QueryType extends ObjectType
                         $authorizationGuard->requireAdmin();
 
                         return $userQueryResolver->listUsers($root, $args);
+                    },
+                ],
+                'me' => [
+                    'type' => Type::nonNull($typeRegistry->user()),
+                    'resolve' => function () use (
+                        $authorizationGuard,
+                        $authenticationQueryResolver,
+                    ): User {
+                        $authorizationGuard->requireUser();
+
+                        return $authenticationQueryResolver->me();
                     },
                 ],
             ],

@@ -45,7 +45,7 @@ final class GraphQLController extends AbstractController
                     ],
                 ],
             ]);
-            $response->setStatusCode( JsonResponse::HTTP_BAD_REQUEST);
+            $response->setStatusCode(JsonResponse::HTTP_BAD_REQUEST);
 
             return $response;
         }

@@ -4,23 +4,16 @@ declare(strict_types=1);
 
 namespace App\Application\Authentication;
 
-use App\Domain\User\User;
 use DateTime;
 
 final readonly class LoginResult
 {
     public function __construct(
-        private User $user,
         private string $accessToken,
         private DateTime $accessTokenExpiresAt,
         private string $rawRefreshToken,
         private DateTime $refreshTokenExpiresAt,
     ) {
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
     }
 
     public function getAccessToken(): string

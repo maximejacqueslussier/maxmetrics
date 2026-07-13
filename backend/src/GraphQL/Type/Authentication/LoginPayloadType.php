@@ -16,9 +16,6 @@ final class LoginPayloadType extends ObjectType
         parent::__construct([
             'name' => 'LoginPayload',
             'fields' => [
-                'user' => [
-                    'type' => Type::nonNull($typeRegistry->user()),
-                ],
                 'accessToken' => [
                     'type' => Type::nonNull(Type::string()),
                 ],
