@@ -6,6 +6,7 @@ namespace App\GraphQL\Execution;
 
 use App\GraphQL\Error\ErrorFormatterChain;
 use App\GraphQL\Request\Request;
+use App\GraphQL\HttpContext;
 use App\GraphQL\Schema;
 use Doctrine\ORM\EntityManagerInterface;
 use GraphQL\Error\Error;
@@ -25,14 +26,14 @@ final readonly class Executor
     ) {
     }
 
-    public function executeQuery(Request $request): ExecutionResult
+    public function executeQuery(Request $request, HttpContext $context): ExecutionResult
     {
         try {
             $result = GraphQL::executeQuery(
                 ($this->schema)(),
                 $request->getQuery(),
                 null,
-                null,
+                $context,
                 $request->getVariables(),
                 $request->getOperationName(),
             );

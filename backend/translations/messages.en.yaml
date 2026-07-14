@@ -19,7 +19,18 @@ app:
                 both: 'Argument ($sorts) must be an array with keys: field and direction.'
         login:
             badCredentials: Bad credentials. Try again.
+        rotateRefreshToken:
+            notFoundMessage: Token not found.
+            expiredMessage: Token is expired.
+            revokedMessage: Token is revoked.
+            replacedMessage: Token is replaced.
     domain:
+        authorization:
+            refreshToken:
+                tokenHash:
+                    notBlankMessage: The token hash must not be blank.
+                    maxMessage: The token hash is too long. It should have {{ limit }} characters or less.
+                    uniqueEntityMessage: This token hash {{ value }} is already used.
         user:
             username:
                 notBlankMessage: Your username should not be blank.
@@ -65,6 +76,9 @@ app:
         request:
             requestParser:
                 badRequestGraphQLException: '{{ object }} must be an object.'
+        resolver:
+            authentication:
+                unauthenticatedException: Authentication is required.
     infrastructure:
         authentication:
             accessToken:

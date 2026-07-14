@@ -32,24 +32,34 @@ final readonly class JwtHandler implements AccessTokenHandlerInterface
             $payload = JWT::decode($accessToken, new Key($this->jwtSecret, 'HS256'));
 
             if ((string) $payload?->iss !== $this->jwtIssuer) {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalidIssuer'));
+                throw new BadCredentialsException(
+                    $this->translator->trans('app.infrastructure.authentication.accessToken.invalidIssuer'),
+                );
             }
 
             $audience = $payload?->aud ?? null;
 
             if ($this->jwtAudience !== $audience) {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalidAudience'));
+                throw new BadCredentialsException(
+                    $this->translator->trans('app.infrastructure.authentication.accessToken.invalidAudience'),
+                );
             }
 
             if (((string) $payload?->sub) === '') {
-                throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.missingSubject'));
+                throw new BadCredentialsException(
+                    $this->translator->trans('app.infrastructure.authentication.accessToken.missingSubject'),
+                );
             }
 
             return new UserBadge((string) $payload->sub);
         } catch (ExpiredException) {
-            throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.expired'));
+            throw new BadCredentialsException(
+                $this->translator->trans('app.infrastructure.authentication.accessToken.expired'),
+            );
         } catch (Throwable) {
-            throw new BadCredentialsException($this->translator->trans('app.infrastructure.authentication.accessToken.invalid'));
+            throw new BadCredentialsException(
+                $this->translator->trans('app.infrastructure.authentication.accessToken.invalid'),
+            );
         }
     }
 }

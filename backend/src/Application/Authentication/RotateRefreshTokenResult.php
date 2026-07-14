@@ -6,7 +6,7 @@ namespace App\Application\Authentication;
 
 use DateTime;
 
-final readonly class LoginResult
+final readonly class RotateRefreshTokenResult
 {
     public function __construct(
         private string $accessToken,

@@ -9,7 +9,8 @@ use GraphQL\Type\Definition\Type;
 
 final class LoginInputType extends InputObjectType
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct([
             'name' => 'LoginInput',
             'fields' => [

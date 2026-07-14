@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Authentication;
 
+use DateTime;
 use Firebase\JWT\JWT;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use function time;
 
-final readonly class JwtIssuer implements AccessTokenIssuer
+final readonly class JwtIssuer
 {
     public function __construct(
         private string $jwtSecret,
@@ -33,7 +34,7 @@ final readonly class JwtIssuer implements AccessTokenIssuer
 
         return [
             'accessToken' => JWT::encode($payload, $this->jwtSecret, 'HS256'),
-            'expiresAt' => $now + $this->jwtTtl,
+            'expiresAt' => (new DateTime())->setTimestamp($now + $this->jwtTtl),
         ];
     }
 }

@@ -7,7 +7,7 @@ namespace App\GraphQL\Authorization;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final readonly class GraphQLAuthorizationGuard
+final readonly class AuthorizationGuard
 {
     public function __construct(
         private AuthorizationCheckerInterface $authorizationChecker,

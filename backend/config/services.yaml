@@ -20,6 +20,8 @@ parameters:
             code: FORBIDDEN
         App\Application\Authentication\BadCredentialsException:
             code: BAD_CREDENTIAL
+        App\Application\Authentication\InvalidRefreshTokenException:
+            code: INVALID_REFRESH_TOKEN
 
 services:
     # default configuration for services in *this* file
@@ -37,6 +39,10 @@ services:
     _instanceof:
         App\GraphQL\Error\ErrorFormatterInterface:
             tags: [app.graphql.error_formatter]
+
+    App\Domain\Authentication\RefreshTokenFactory:
+        arguments:
+            $refreshTokenTtl: '%env(REFRESH_TOKEN_TTL)%'
 
     App\GraphQL\Error\ExceptionMapErrorFormatter:
         arguments:
@@ -59,3 +65,9 @@ services:
             $jwtIssuer: '%env(JWT_ISSUER)%'
             $jwtAudience: '%env(JWT_AUDIENCE)%'
             $jwtTtl: '%env(JWT_TTL)%'
+    
+    App\Infrastructure\Http\RefreshTokenCookieManager:
+        arguments:
+            $path: '%env(REFRESH_TOKEN_COOKIE_PATH)%'
+            $isSecure: '%env(bool:REFRESH_TOKEN_COOKIE_SECURE)%'
+            $httpOnly: '%env(bool:REFRESH_TOKEN_COOKIE_HTTPONLY)%'

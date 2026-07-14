@@ -24,6 +24,8 @@ export default function LoginForm () {
             
                 return
             }
+
+            setError('Unable to log in. Please try again.')
         }
     }
 

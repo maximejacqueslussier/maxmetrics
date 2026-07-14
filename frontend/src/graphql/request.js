@@ -11,6 +11,7 @@ export async function graphQLRequest(query, variables = {}, accessToken = null) 
 
     const response = await fetch('/graphql', {
         method: 'POST',
+        credentials: 'include',
         headers,
         body: JSON.stringify({ query, variables }),
     })
