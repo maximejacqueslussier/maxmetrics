@@ -16,8 +16,12 @@ final class UserConnectionType extends ObjectType
         parent::__construct([
             'name' => 'UserConnection',
             'fields' => [
-                'edges' => Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->userEdge()))),
-                'pageInfo' => Type::nonNull($typeRegistry->pageInfo()),
+                'edges' => [
+                    'type' => Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->userEdge()))),
+                ],
+                'pageInfo' => [
+                    'type' => Type::nonNull($typeRegistry->pageInfo()),
+                ],
             ],
         ]);
     }

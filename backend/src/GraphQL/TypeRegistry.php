@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace App\GraphQL;
 
+use App\GraphQL\Input\Account\UpdateEmailInputType;
+use App\GraphQL\Input\Account\UpdatePasswordInputType;
+use App\GraphQL\Input\Account\UpdateProfileInputType;
+use App\GraphQL\Input\Account\UpdateUsernameInputType;
 use App\GraphQL\Input\Authentication\LoginInputType;
 use App\GraphQL\Input\User\CreateUserInputType;
 use App\GraphQL\Input\User\UpdateUserInputType;
 use App\GraphQL\Input\User\UserFilterInputType;
 use App\GraphQL\Input\User\UserOrderByInputType;
 use App\GraphQL\Type\PageInfoType;
+use App\GraphQL\Type\Account\UpdateEmailPayloadType;
+use App\GraphQL\Type\Account\UpdatePasswordPayloadType;
+use App\GraphQL\Type\Account\UpdateProfilePayloadType;
+use App\GraphQL\Type\Account\UpdateUsernamePayloadType;
 use App\GraphQL\Type\Authentication\LoginPayloadType;
 use App\GraphQL\Type\Authentication\RefreshTokenPayloadType;
 use App\GraphQL\Type\Authentication\LogoutPayloadType;
@@ -110,16 +118,56 @@ final class TypeRegistry
 
     public function loginInput(): LoginInputType
     {
-        return $this->types['loginInput'] ??= new LoginInputType();
+        return $this->types['LoginInput'] ??= new LoginInputType();
     }
 
     public function refreshTokenPayload(): RefreshTokenPayloadType
     {
-        return $this->types['refreshTokenPayload'] ??= new RefreshTokenPayloadType($this);
+        return $this->types['RefreshTokenPayload'] ??= new RefreshTokenPayloadType($this);
     }
 
     public function logoutPayload(): LogoutPayloadType
     {
-        return $this->types['logoutPayload'] ??= new LogoutPayloadType();
+        return $this->types['LogoutPayload'] ??= new LogoutPayloadType();
+    }
+
+    public function updateUsernamePayload(): UpdateUsernamePayloadType
+    {
+        return $this->types['UpdateUsernamePayload'] ??= new UpdateUsernamePayloadType($this);
+    }
+
+    public function updateUsernameInput(): UpdateUsernameInputType
+    {
+        return $this->types['UpdateUsernameInput'] ??= new UpdateUsernameInputType();
+    }
+
+    public function updateEmailPayload(): UpdateEmailPayloadType
+    {
+        return $this->types['UpdateEmailPayload'] ??= new UpdateEmailPayloadType($this);
+    }
+
+    public function updateEmailInput(): UpdateEmailInputType
+    {
+        return $this->types['UpdateEmailInput'] ??= new UpdateEmailInputType();
+    }
+
+    public function updatePasswordPayload(): UpdatePasswordPayloadType
+    {
+        return $this->types['UpdatePasswordPayload'] ??= new UpdatePasswordPayloadType();
+    }
+
+    public function updatePasswordInput(): UpdatePasswordInputType
+    {
+        return $this->types['UpdatePasswordInput'] ??= new UpdatePasswordInputType();
+    }
+
+    public function updateProfilePayload(): UpdateProfilePayloadType
+    {
+        return $this->types['UpdateProfilePayload'] ??= new UpdateProfilePayloadType($this);
+    }
+
+    public function updateProfileInput(): UpdateProfileInputType
+    {
+        return $this->types['UpdateProfileInput'] ??= new UpdateProfileInputType();
     }
 }

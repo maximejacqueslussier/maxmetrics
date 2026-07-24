@@ -40,6 +40,16 @@ export function AuthProvider ({ children }) {
         restoreSession()
     }, [])
 
+    const updateUser = useCallback((user) => {
+        setState((currentState) => ({
+            ...currentState,
+            user: {
+                ...currentState.user,
+                ...user,
+            },
+        }))
+    }, [])
+
     const login = useCallback(async (credentials) => {
         const { login } = await loginMutation(credentials)
         const { me } = await meQuery(login.accessToken)
@@ -69,7 +79,8 @@ export function AuthProvider ({ children }) {
         isAdmin: state.status === 'authenticated' && state.user?.role === 'ROLE_ADMIN',
         login,
         logout,
-    }), [state, login, logout])
+        updateUser,
+    }), [state, login, logout, updateUser])
 
     return (
         <AuthContext.Provider value={value}>

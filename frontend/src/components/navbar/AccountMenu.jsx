@@ -13,11 +13,16 @@ export default function AccountMenu () {
             )}
 
             {isAuthenticated && (
-                <li>
-                    <button type="button" onClick={logout}>
-                        Logout
-                    </button>
-                </li>
+                <>
+                    <li>
+                        <NavLink to="/account">Account</NavLink>
+                    </li>
+                    <li>
+                        <button type="button" onClick={logout}>
+                            Logout
+                        </button>
+                    </li>
+                </>
             )}
         </ul>
     )

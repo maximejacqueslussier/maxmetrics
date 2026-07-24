@@ -1,38 +1,32 @@
 import { useState } from 'react'
 
-export default function LoginForm ({ error = '', onSubmit, onReset }) {
+export default function PasswordForm ({ errors = {}, onSubmit, onReset }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     function handleSubmit(event) {
         event.preventDefault()
 
         const input = Object.fromEntries(new FormData(event.currentTarget).entries())
-
+        
         onSubmit(input)
     }
 
     return (
         <>
             <p>Fields marked with * are required.</p>
-            {error.length > 0 && (
-                <p role="alert" tabIndex="-1">{error}</p>
+            {Object.keys(errors).length > 0 && (
+                <p role="alert">Please fix the errors below.</p>
             )}
             <form onSubmit={handleSubmit} onReset={onReset}>
                 <fieldset>
-                    <legend>Login</legend>
-                    <label htmlFor="username">Username <span aria-hidden="true">*</span></label>
-                    <input type="text"
-                        id="username"
-                        name="username"
-                        autoComplete="username"
-                        required
-                        maxLength="255" />
-
+                    <legend>Current password: ****</legend>
                     <label htmlFor="password">Password <span aria-hidden="true">*</span></label>
                     <input type={isPasswordVisible ? 'text' : 'password'}
                         id="password"
                         name="password"
-                        autoComplete="current-password"
+                        aria-invalid={errors.password ? 'true' : undefined}
+                        aria-describedby={errors.password ? 'password-error' : undefined}
+                        autoComplete="off"
                         required
                         maxLength="255" />
                     <button type="button"
@@ -40,10 +34,13 @@ export default function LoginForm ({ error = '', onSubmit, onReset }) {
                         onClick={() => setIsPasswordVisible((visible) => !visible)}>
                         {isPasswordVisible ? 'Hide password' : 'Show password'}
                     </button>
-
-                    <button type="submit">Login</button>
-                    <button type="reset">Reset</button>
+                    {errors.password && (
+                        <p id="password-error">{errors.password}</p>
+                    )}
                 </fieldset>
+
+                <button type="submit">Save password</button>
+                <button type="reset">Reset</button>
             </form>
         </>
     )

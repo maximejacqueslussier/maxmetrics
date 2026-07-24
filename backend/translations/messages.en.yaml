@@ -24,6 +24,14 @@ app:
             expiredMessage: Token is expired.
             revokedMessage: Token is revoked.
             replacedMessage: Token is replaced.
+        updateEmail:
+            validationFailed: New email validation failed.
+        updatePassword:
+            validationFailed: New password validation failed.
+        updateUsername:
+            validationFailed: New username validation failed. 
+        updateProfile:
+            validationFailed: Update profile validation failed.
     domain:
         authorization:
             refreshToken:
@@ -77,6 +85,8 @@ app:
             requestParser:
                 badRequestGraphQLException: '{{ object }} must be an object.'
         resolver:
+            account:
+                unauthenticatedException: Authentication is required.
             authentication:
                 unauthenticatedException: Authentication is required.
     infrastructure:

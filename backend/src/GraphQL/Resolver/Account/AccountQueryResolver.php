@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\GraphQL\Resolver\Authentication;
+namespace App\GraphQL\Resolver\Account;
 
 use App\Domain\User\User;
 use App\GraphQL\Authorization\UnauthenticatedException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-final readonly class AuthenticationQueryResolver
+final readonly class AccountQueryResolver
 {
     public function __construct(
         private Security $security,

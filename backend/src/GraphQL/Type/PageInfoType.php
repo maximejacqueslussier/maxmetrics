@@ -14,10 +14,18 @@ final class PageInfoType extends ObjectType
         parent::__construct([
             'name' => 'PageInfo',
             'fields' => [
-                'hasPreviousPage' => Type::nonNull(Type::boolean()),
-                'hasNextPage' => Type::nonNull(Type::boolean()),
-                'startCursor' => Type::string(),
-                'endCursor' => Type::string(),
+                'hasPreviousPage' => [
+                    'type' => Type::nonNull(Type::boolean()),
+                ],
+                'hasNextPage' => [
+                    'type' => Type::nonNull(Type::boolean()),
+                ],
+                'startCursor' => [
+                    'type' => Type::string(),
+                ],
+                'endCursor' => [
+                    'type' => Type::string(),
+                ],
             ],
         ]);
     }

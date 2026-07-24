@@ -28,12 +28,12 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                                 id="username"
                                 name="username"
                                 aria-invalid={errors.username ? 'true' : undefined}
-                                aria-describedby={errors.username ? 'usernameError' : undefined}
+                                aria-describedby={errors.username ? 'username-error' : undefined}
                                 autoComplete="username"
                                 required
                                 maxLength="255" />
                             {errors.username && (
-                                <p id="usernameError">{errors.username}</p>
+                                <p id="username-error">{errors.username}</p>
                             )}
 
                             <label htmlFor="password">Password <span aria-hidden="true">*</span></label>
@@ -41,7 +41,7 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                                 id="password"
                                 name="password"
                                 aria-invalid={errors.password ? 'true' : undefined}
-                                aria-describedby={errors.password ? 'passwordError' : undefined}
+                                aria-describedby={errors.password ? 'password-error' : undefined}
                                 autoComplete="off"
                                 required
                                 maxLength="255" />
@@ -51,7 +51,7 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                                 {isPasswordVisible ? 'Hide password' : 'Show password'}
                             </button>
                             {errors.password && (
-                                <p id="passwordError">{errors.password}</p>
+                                <p id="password-error">{errors.password}</p>
                             )}
                         </>
                     )}
@@ -73,12 +73,12 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="salutation"
                         name="salutation"
                         aria-invalid={errors.salutation ? 'true' : undefined}
-                        aria-describedby={errors.salutation ? 'salutationError' : undefined}
+                        aria-describedby={errors.salutation ? 'salutation-error' : undefined}
                         autoComplete="honorific-prefix"
                         maxLength="64"
                         defaultValue={initialValues.salutation} />
                     {errors.salutation && (
-                        <p id="salutationError">{errors.salutation}</p>
+                        <p id="salutation-error">{errors.salutation}</p>
                     )}
                     
                     <label htmlFor="firstName">First name <span aria-hidden="true">*</span></label>
@@ -86,13 +86,13 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="firstName"
                         name="firstName"
                         aria-invalid={errors.firstName ? 'true' : undefined}
-                        aria-describedby={errors.firstName ? 'firstNameError' : undefined}
+                        aria-describedby={errors.firstName ? 'first-name-error' : undefined}
                         autoComplete="given-name"
                         required
                         maxLength="128"
                         defaultValue={initialValues.firstName} />
                     {errors.firstName && (
-                        <p id="firstNameError">{errors.firstName}</p>
+                        <p id="first-name-error">{errors.firstName}</p>
                     )}
                     
                     <label htmlFor="middleName">Middle name</label>
@@ -100,12 +100,12 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="middleName"
                         name="middleName"
                         aria-invalid={errors.middleName ? 'true' : undefined}
-                        aria-describedby={errors.middleName ? 'middleNameError' : undefined}
+                        aria-describedby={errors.middleName ? 'middle-name-error' : undefined}
                         autoComplete="additional-name"
                         maxLength="128"
                         defaultValue={initialValues.middleName} />
                     {errors.middleName && (
-                        <p id="middleNameError">{errors.middleName}</p>
+                        <p id="middle-name-error">{errors.middleName}</p>
                     )}
                     
                     <label htmlFor="lastName">Last name <span aria-hidden="true">*</span></label>
@@ -113,13 +113,13 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="lastName"
                         name="lastName"
                         aria-invalid={errors.lastName ? 'true' : undefined}
-                        aria-describedby={errors.lastName ? 'lastNameError' : undefined}
+                        aria-describedby={errors.lastName ? 'last-name-error' : undefined}
                         autoComplete="family-name"
                         required
                         maxLength="128"
                         defaultValue={initialValues.lastName} />
                     {errors.lastName && (
-                        <p id="lastNameError">{errors.lastName}</p>
+                        <p id="last-name-error">{errors.lastName}</p>
                     )}
                 </fieldset>
                 <fieldset>
@@ -130,11 +130,11 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="pronouns"
                         name="pronouns"
                         aria-invalid={errors.pronouns ? 'true' : undefined}
-                        aria-describedby={errors.pronouns ? 'pronounsError' : undefined}
+                        aria-describedby={errors.pronouns ? 'pronouns-error' : undefined}
                         maxLength="64"
                         defaultValue={initialValues.pronouns} />
                     {errors.pronouns && (
-                        <p id="pronounsError">{errors.pronouns}</p>
+                        <p id="pronouns-error">{errors.pronouns}</p>
                     )}
                     
                     <label htmlFor="genderIdentity">Gender Identity</label>
@@ -142,11 +142,11 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="genderIdentity"
                         name="genderIdentity"
                         aria-invalid={errors.genderIdentity ? 'true' : undefined}
-                        aria-describedby={errors.genderIdentity ? 'genderIdentityError' : undefined}
+                        aria-describedby={errors.genderIdentity ? 'gender-identity-error' : undefined}
                         maxLength="64"
                         defaultValue={initialValues.genderIdentity} />
                     {errors.genderIdentity && (
-                        <p id="genderIdentityError">{errors.genderIdentity}</p>
+                        <p id="gender-identity-error">{errors.genderIdentity}</p>
                     )}
                 </fieldset>
                 <fieldset>
@@ -157,13 +157,13 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="email"
                         name="email"
                         aria-invalid={errors.email ? 'true' : undefined}
-                        aria-describedby={errors.email ? 'emailError' : undefined}
+                        aria-describedby={errors.email ? 'email-error' : undefined}
                         autoComplete="email"
                         required
                         maxLength="256"
                         defaultValue={initialValues.email} />
                     {errors.email && (
-                        <p id="emailError">{errors.email}</p>
+                        <p id="email-error">{errors.email}</p>
                     )}
                     
                     <label htmlFor="phoneNumber">Phone number</label>
@@ -171,12 +171,12 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         id="phoneNumber"
                         name="phoneNumber"
                         aria-invalid={errors.phoneNumber ? 'true' : undefined}
-                        aria-describedby={errors.phoneNumber ? 'phoneNumberError' : undefined}
+                        aria-describedby={errors.phoneNumber ? 'phone-number-error' : undefined}
                         autoComplete="tel"
                         maxLength="64"
                         defaultValue={initialValues.phoneNumber} />
                     {errors.phoneNumber && (
-                        <p id="phoneNumberError">{errors.phoneNumber}</p>
+                        <p id="phone-number-error">{errors.phoneNumber}</p>
                     )}
                 </fieldset>
                 

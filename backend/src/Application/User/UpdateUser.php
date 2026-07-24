@@ -98,7 +98,6 @@ final readonly class UpdateUser
             );
         }
 
-        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return new UpdateUserResult($user, $changedFields);

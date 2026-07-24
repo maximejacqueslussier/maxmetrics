@@ -27,8 +27,7 @@ final readonly class DeleteUser
             );
         }
 
-        $this->entityManager->wrapInTransaction(function () use ($user): void {
-            $this->entityManager->remove($user);
-        });
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
     }
 }
