@@ -60,10 +60,9 @@ final readonly class CreateUser
             );
         }
 
-        return $this->entityManager->wrapInTransaction(function () use ($user): User {
-            $this->entityManager->persist($user);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
-            return $user;
-        });
+        return $user;
     }
 }

@@ -6,6 +6,7 @@ namespace App\GraphQL\Type;
 
 use App\GraphQL\Authorization\AuthorizationGuard;
 use App\GraphQL\TypeRegistry;
+use App\GraphQL\Resolver\Account\AccountMutationResolver;
 use App\GraphQL\Resolver\Authentication\AuthenticationMutationResolver;
 use App\GraphQL\Resolver\User\UserMutationResolver;
 use GraphQL\Type\Definition\ObjectType;
@@ -17,6 +18,7 @@ final class MutationType extends ObjectType
         TypeRegistry $typeRegistry,
         UserMutationResolver $userResolver,
         AuthenticationMutationResolver $authenticationResolver,
+        AccountMutationResolver $accountResolver,
         AuthorizationGuard $authorizationGuard,
     ) {
         parent::__construct([
@@ -25,7 +27,9 @@ final class MutationType extends ObjectType
                 'createUser' => [
                     'type' => $typeRegistry->createUserPayload(),
                     'args' => [
-                        'input' => Type::nonNull($typeRegistry->createUserInput()),
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->createUserInput()),
+                        ],
                     ],
                     'resolve' => function (
                         mixed $root,
@@ -42,8 +46,12 @@ final class MutationType extends ObjectType
                 'updateUser' => [
                     'type' => $typeRegistry->updateUserPayload(),
                     'args' => [
-                        'id' => Type::nonNull(Type::id()),
-                        'input' => Type::nonNull($typeRegistry->updateUserInput()),
+                        'id' => [
+                            'type' => Type::nonNull(Type::id()),
+                        ],
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->updateUserInput()),
+                        ],
                     ],
                     'resolve' => function (
                         mixed $root,
@@ -60,7 +68,9 @@ final class MutationType extends ObjectType
                 'deleteUser' => [
                     'type' => $typeRegistry->deleteUserPayload(),
                     'args' => [
-                        'id' => Type::nonNull(Type::id()),
+                        'id' => [
+                            'type' => Type::nonNull(Type::id()),
+                        ],
                     ],
                     'resolve' => function (
                         mixed $root,
@@ -77,7 +87,9 @@ final class MutationType extends ObjectType
                 'login' => [
                     'type' => $typeRegistry->loginPayload(),
                     'args' => [
-                        'input' => Type::nonNull($typeRegistry->loginInput())
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->loginInput()),
+                        ],
                     ],
                     'resolve' => [$authenticationResolver, 'login'],
                 ],
@@ -88,6 +100,82 @@ final class MutationType extends ObjectType
                 'logout' => [
                     'type' => $typeRegistry->logoutPayload(),
                     'resolve' => [$authenticationResolver, 'logout'],
+                ],
+                'updateUsername' => [
+                    'type' => $typeRegistry->updateUsernamePayload(),
+                    'args' => [
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->updateUsernameInput()),
+                        ],
+                    ],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $accountResolver,
+                        $authorizationGuard,
+                    ): array {
+                        $authorizationGuard->requireUser();
+
+                        return $accountResolver->updateUsername($root, $args);
+                    }
+                ],
+                'updateEmail' => [
+                    'type' => $typeRegistry->updateEmailPayload(),
+                    'args' => [
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->updateEmailInput()),
+                        ],
+                    ],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $accountResolver,
+                        $authorizationGuard,
+                    ): array {
+                        $authorizationGuard->requireUser();
+
+                        return $accountResolver->updateEmail($root, $args);
+                    }
+                ],
+                'updatePassword' => [
+                    'type' => $typeRegistry->updatePasswordPayload(),
+                    'args' => [
+                        'input' => [
+                            'type' => Type::nonNull($typeRegistry->updatePasswordInput()),
+                        ],
+                    ],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $accountResolver,
+                        $authorizationGuard,
+                    ): array {
+                        $authorizationGuard->requireUser();
+
+                        return $accountResolver->updatePassword($root, $args);
+                    }
+                ],
+                'updateProfile' => [
+                    'type' => $typeRegistry->updateProfilePayload(),
+                    'args' => [
+                        'input' => [
+                            'type' => $typeRegistry->updateProfileInput(),
+                        ],
+                    ],
+                    'resolve' => function (
+                        mixed $root,
+                        array $args,
+                    ) use (
+                        $accountResolver,
+                        $authorizationGuard,
+                    ): array {
+                        $authorizationGuard->requireUser();
+
+                        return $accountResolver->updateProfile($root, $args);
+                    }
                 ],
             ],
         ]);
