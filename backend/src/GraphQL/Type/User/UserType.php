@@ -65,6 +65,10 @@ final class UserType extends ObjectType
                     'type' => Type::string(),
                     'resolve' => static fn (User $user) => $user->getPhoneNumber(),
                 ],
+                'dateOfBirth' => [
+                    'type' => $typeRegistry->dateTime(),
+                    'resolve' => static fn (User $user) => $user->getDateOfBirth(),
+                ],
                 'createdAt' => [
                     'type' => Type::nonNull($typeRegistry->dateTime()),
                     'resolve' => static fn (User $user) => $user->getCreatedAt(),

@@ -168,6 +168,6 @@ final class TypeRegistry
 
     public function updateProfileInput(): UpdateProfileInputType
     {
-        return $this->types['UpdateProfileInput'] ??= new UpdateProfileInputType();
+        return $this->types['UpdateProfileInput'] ??= new UpdateProfileInputType($this);
     }
 }

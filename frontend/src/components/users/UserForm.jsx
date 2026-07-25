@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { formatDateInputValue } from '../../utils/dateInput.js'
 
 export default function UserForm({ mode, initialValues = {}, errors = {}, onSubmit, onReset }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -7,9 +8,16 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
         event.preventDefault()
 
         const input = Object.fromEntries(new FormData(event.currentTarget).entries())
+        
+        if (input.dateOfBirth === '') {
+            delete input.dateOfBirth
+        }
 
         onSubmit(input)
     }
+
+    const today = new Date().toISOString().slice(0, 10)
+    const dateOfBirth = formatDateInputValue(initialValues.dateOfBirth)
 
     return (
         <>
@@ -147,6 +155,18 @@ export default function UserForm({ mode, initialValues = {}, errors = {}, onSubm
                         defaultValue={initialValues.genderIdentity} />
                     {errors.genderIdentity && (
                         <p id="gender-identity-error">{errors.genderIdentity}</p>
+                    )}
+
+                    <label htmlFor="dateOfBirth">Date of Birth</label>
+                    <input type="date"
+                        id="dateOfBirth"
+                        name="dateOfBirth"
+                        aria-invalid={errors.dateOfBirth ? 'true' : undefined}
+                        aria-describedby={errors.dateOfBirth ? 'date-of-birth-error' : undefined}
+                        max={today}
+                        defaultValue={dateOfBirth} />
+                    {errors.dateOfBirth && (
+                        <p id="date-of-birth-error">{errors.dateOfBirth}</p>
                     )}
                 </fieldset>
                 <fieldset>

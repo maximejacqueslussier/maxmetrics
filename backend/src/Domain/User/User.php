@@ -92,6 +92,10 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(max: 64, maxMessage: 'app.domain.user.phoneNumber.maxMessage')]
     private ?string $phoneNumber = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\LessThan(value: 'today', message: 'app.domain.user.dateOfBirth.lessThanMessage')]
+    private ?DateTime $dateOfBirth = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
 
@@ -252,6 +256,18 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(?string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getDateOfBirth(): ?DateTime
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function setDateOfBirth(?DateTime $dateOfBirth): self
+    {
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }

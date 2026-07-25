@@ -74,6 +74,8 @@ app:
                 uniqueEntityMessage: This email address {{ value }} is already used.
             phoneNumber:
                 maxMessage: Your phone number is too long. It should have {{ limit }} characters or less.
+            dateOfBirth:
+                lessThanMessage: Your date of birth must be in the past.
     graphql:
         authorization:
             forbiddenException: You do not have permission to perform this action.

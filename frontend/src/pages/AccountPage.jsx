@@ -14,6 +14,7 @@ export default function AccountPage () {
     const salutation = user.salutation?.trim()
     const pronouns = user.pronouns?.trim()
     const genderIdentity = user.genderIdentity?.trim()
+    const dateOfBirth = user.dateOfBirth?.trim()
 
     return (
         <>
@@ -74,6 +75,12 @@ export default function AccountPage () {
                         <>
                             <dt>Gender identity</dt>
                             <dd>{genderIdentity}</dd>
+                        </>
+                    )}
+                    {dateOfBirth && (
+                        <>
+                            <dt>Date of birth</dt>
+                            <dd>{dateOfBirth}</dd>
                         </>
                     )}
                 </dl>

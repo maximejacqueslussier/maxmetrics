@@ -56,6 +56,7 @@ final readonly class CreateAdminUserCommand
                 $lastName,
                 $email,
                 null,
+                null,
             );
 
             $io->success(sprintf('Admin user "%s" has been successfully created.', $adminUser->getUsername()));

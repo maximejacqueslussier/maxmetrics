@@ -38,6 +38,7 @@ const ME_QUERY = `
             lastName
             email
             phoneNumber
+            dateOfBirth
         }
     }
 `

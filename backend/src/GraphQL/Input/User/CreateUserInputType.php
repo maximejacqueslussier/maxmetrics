@@ -49,6 +49,9 @@ final class CreateUserInputType extends InputObjectType
                 'phoneNumber' => [
                     'type' => Type::string(),
                 ],
+                'dateOfBirth' => [
+                    'type' => $typeRegistry->dateTime(),
+                ],
             ],
         ]);
     }

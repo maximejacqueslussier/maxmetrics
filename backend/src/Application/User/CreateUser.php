@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\User;
 
 use App\Domain\User\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
@@ -35,6 +36,7 @@ final readonly class CreateUser
         string $lastName,
         string $email,
         ?string $phoneNumber,
+        ?DateTime $dateOfBirth,
     ): User {
         $user = new User();
         $user
@@ -48,6 +50,7 @@ final readonly class CreateUser
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPhoneNumber($phoneNumber)
+            ->setDateOfBirth($dateOfBirth)
         ;
         $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));
 

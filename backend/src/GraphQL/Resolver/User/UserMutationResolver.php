@@ -33,6 +33,7 @@ final readonly class UserMutationResolver
             $input['lastName'],
             $input['email'],
             $input['phoneNumber'] ?? null,
+            $input['dateOfBirth'] ?? null,
         );
 
         return ['user' => $user];
@@ -54,6 +55,7 @@ final readonly class UserMutationResolver
             $input['lastName'] ?? null,
             $input['email'] ?? null,
             $input['phoneNumber'] ?? null,
+            $input['dateOfBirth'] ?? null,
         );
 
         return [

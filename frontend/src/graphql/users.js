@@ -26,6 +26,7 @@ const LIST_USERS_QUERY = `
                     lastName
                     email
                     phoneNumber
+                    dateOfBirth
                     createdAt
                     updatedAt
                 }
@@ -59,6 +60,7 @@ const GET_USER_QUERY = `
                     lastName
                     email
                     phoneNumber
+                    dateOfBirth
                     createdAt
                     updatedAt
                 }
@@ -82,6 +84,7 @@ const CREATE_USER_MUTATION = `
                 lastName
                 email
                 phoneNumber
+                dateOfBirth
                 createdAt
                 updatedAt
             }
@@ -104,6 +107,7 @@ const UPDATE_USER_MUTATION = `
                 lastName
                 email
                 phoneNumber
+                dateOfBirth
                 createdAt
                 updatedAt
             }
