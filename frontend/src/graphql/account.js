@@ -36,6 +36,7 @@ const UPDATE_PROFILE_MUTATION = `
 				pronouns
 				genderIdentity
 				phoneNumber
+				dateOfBirth
 			}
 		}
 	}

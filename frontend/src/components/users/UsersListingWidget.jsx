@@ -30,6 +30,7 @@ export default function UsersListingWidget() {
                         <th scope="col">Salutation</th>
                         <th scope="col">Pronouns</th>
                         <th scope="col">Gender identity</th>
+                        <th scope="col">Date of birth</th>
                         <th scope="col">First name</th>
                         <th scope="col">Last name</th>
                         <th scope="col">Email address</th>
@@ -48,6 +49,7 @@ export default function UsersListingWidget() {
                             <td>{user.salutation}</td>
                             <td>{user.pronouns}</td>
                             <td>{user.genderIdentity}</td>
+                            <td>{user.dateOfBirth}</td>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
                             <td>{user.email}</td>

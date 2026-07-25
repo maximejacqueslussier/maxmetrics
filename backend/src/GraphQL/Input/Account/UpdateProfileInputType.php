@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Input\Account;
 
+use App\GraphQL\TypeRegistry;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
 final class UpdateProfileInputType extends InputObjectType
 {
-    public function __construct()
+    public function __construct(
+        TypeRegistry $typeRegistry,
+    )
     {
         parent::__construct([
             'name' => 'UpdateProfileInput',
@@ -26,6 +29,9 @@ final class UpdateProfileInputType extends InputObjectType
                 'phoneNumber' => [
                     'type' => Type::string(),
                 ],
+                'dateOfBirth' => [
+                    'type' => $typeRegistry->dateTime(),
+                ]
             ],
         ]);
     }

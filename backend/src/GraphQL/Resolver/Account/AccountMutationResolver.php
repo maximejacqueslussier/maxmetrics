@@ -64,17 +64,18 @@ final readonly class AccountMutationResolver
         $user = $this->getUser();
         $input = $args['input'];
 
-        $changedFields = $this->updateProfile->execute(
+        $result = $this->updateProfile->execute(
             $user,
             $input['salutation'] ?? null,
             $input['pronouns'] ?? null,
             $input['genderIdentity'] ?? null,
             $input['phoneNumber'] ?? null,
+            $input['dateOfBirth'] ?? null,
         );
 
         return [
-            'user' => $user,
-            'changedFields' => $changedFields,
+            'user' => $result->getUser(),
+            'changedFields' => $result->getChangedFields(),
         ];
     }
 

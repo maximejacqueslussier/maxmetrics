@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Type\Definition;
 
-use DateTimeImmutable;
+use DateTime;
 use DateTimeInterface;
 use GraphQL\Error\Error;
 use GraphQL\Error\SerializationError;
@@ -31,7 +31,7 @@ final class DateTimeType extends ScalarType
         throw new SerializationError("DateTime cannot represent value: {$notDateTimeable}");
     }
 
-    public function parseValue(mixed $value): DateTimeImmutable
+    public function parseValue(mixed $value): DateTime
     {
         if (!is_string($value)) {
             $notString = Utils::printSafeJson($value);
@@ -39,13 +39,13 @@ final class DateTimeType extends ScalarType
         }
 
         try {
-            return new DateTimeImmutable($value);
+            return new DateTime($value);
         } catch (Throwable) {
             throw new Error('DateTime has invalid format, expecting ISO-8601');
         }
     }
 
-    public function parseLiteral(mixed $valueNode, ?array $variables = null): DateTimeImmutable
+    public function parseLiteral(mixed $valueNode, ?array $variables = null): DateTime
     {
         if (!$valueNode instanceof StringValueNode) {
             $notString = Printer::doPrint($valueNode);
@@ -53,7 +53,7 @@ final class DateTimeType extends ScalarType
         }
 
         try {
-            return new DateTimeImmutable($valueNode->value);
+            return new DateTime($valueNode->value);
         } catch (Throwable) {
             throw new Error('Invalid DateTime literal, expecting ISO-8601');
         }

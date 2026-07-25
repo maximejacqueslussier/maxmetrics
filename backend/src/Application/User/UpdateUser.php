@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\User;
 
 use App\Domain\User\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,15 +25,16 @@ final readonly class UpdateUser
 
     public function execute(
         int $id,
-        ?string $role,
-        ?string $salutation,
-        ?string $pronouns,
-        ?string $genderIdentity,
-        ?string $firstName,
-        ?string $middleName,
-        ?string $lastName,
-        ?string $email,
-        ?string $phoneNumber,
+        ?string $role = null,
+        ?string $salutation = null,
+        ?string $pronouns = null,
+        ?string $genderIdentity = null,
+        ?string $firstName = null,
+        ?string $middleName = null,
+        ?string $lastName = null,
+        ?string $email = null,
+        ?string $phoneNumber = null,
+        ?DateTime $dateOfBirth = null,
     ): UpdateUserResult {
         $user = $this->repository->find($id);
 
@@ -87,6 +89,11 @@ final readonly class UpdateUser
         if ($phoneNumber !== null) {
             $user->setPhoneNumber($phoneNumber);
             $changedFields[] = 'phoneNumber';
+        }
+
+        if ($dateOfBirth !== null) {
+            $user->setDateOfBirth($dateOfBirth);
+            $changedFields[] = 'dateOfBirth';
         }
 
         $errors = $this->validator->validate($user);
