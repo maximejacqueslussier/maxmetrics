@@ -7,6 +7,8 @@ namespace App\Application\User\ListUsers;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function ctype_digit;
+use function is_int;
+use function is_string;
 
 final class UsersListQuery
 {
@@ -32,7 +34,7 @@ final class UsersListQuery
     public function setIds(array $ids): self
     {
         foreach ($ids as $id) {
-            if (!ctype_digit($id)) {
+            if (!((is_int($id) && $id >= 0) || (is_string($id) && ctype_digit($id)))) {
                 throw new InvalidUserIdException(
                     $this->translator->trans('app.application.listUsers.invalidUserIdException')
                 );
@@ -51,7 +53,7 @@ final class UsersListQuery
 
     public function setFirstIds(int $firstIds): self
     {
-        if (!ctype_digit($firstIds) && $firstIds <= 0) {
+        if ($firstIds <= 0) {
             throw new InvalidForwardPaginationException(
                 $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.firstIds'),
             );
@@ -69,7 +71,7 @@ final class UsersListQuery
 
     public function setAfterId(int $afterId): self
     {
-        if (!ctype_digit($afterId) && $afterId < 0) {
+        if ($afterId < 0) {
             throw new InvalidForwardPaginationException(
                 $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.afterId'),
             );
@@ -87,11 +89,13 @@ final class UsersListQuery
 
     public function setLimit(int $limit): self
     {
-        if (!ctype_digit($limit) && $limit < 1) {
+        if ($limit < 1) {
             throw new InvalidForwardPaginationException(
                 $this->translator->trans('app.application.listUsers.invalidForwardPaginationException.limit'),
             );
         }
+
+        $this->limit = $limit;
 
         return $this;
     }

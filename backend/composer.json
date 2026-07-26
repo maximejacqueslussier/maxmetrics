@@ -4,15 +4,15 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/doctrine-bundle": "^3.2.4",
+        "doctrine/doctrine-bundle": "^3.3.1",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.7",
         "firebase/php-jwt": "^7.1",
         "phpdocumentor/reflection-docblock": "^6.0.3",
-        "phpstan/phpdoc-parser": "^2.3.2",
+        "phpstan/phpdoc-parser": "^2.3.3",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2.11",
@@ -25,10 +25,10 @@
         "symfony/runtime": "7.4.*",
         "symfony/security-bundle": "7.4.*",
         "symfony/serializer": "7.4.*",
-        "symfony/translation": "^7.4.10",
+        "symfony/translation": "^7.4.14",
         "symfony/validator": "7.4.*",
         "symfony/yaml": "7.4.*",
-        "webonyx/graphql-php": "^15.33.1"
+        "webonyx/graphql-php": "^15.35.0"
     },
     "config": {
         "allow-plugins": {
@@ -64,6 +64,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd"
         },
+        "lint": "phpcs src/ tests/",
+        "test": "phpunit",
         "post-install-cmd": [
             "@auto-scripts"
         ],
@@ -81,6 +83,9 @@
         }
     },
     "require-dev": {
-        "slevomat/coding-standard": "^8.29"
+        "phpunit/phpunit": "^13.2",
+        "slevomat/coding-standard": "^8.31",
+        "symfony/browser-kit": "7.4.*",
+        "symfony/css-selector": "7.4.*"
     }
 }

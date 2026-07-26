@@ -17,7 +17,8 @@ final class UserOrderByInputType extends InputObjectType
             'name' => 'UserOrderByInput',
             'fields' => [
                 'field' => [
-                    'type' => Type::nonNull($typeRegistry->userOrderByField()),
+                    'type' => $typeRegistry->userOrderByField(),
+                    'defaultValue' => 'id',
                 ],
                 'direction' => [
                     'type' => $typeRegistry->orderByDirection(),

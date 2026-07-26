@@ -12,8 +12,7 @@ final class UpdateProfileInputType extends InputObjectType
 {
     public function __construct(
         TypeRegistry $typeRegistry,
-    )
-    {
+    ) {
         parent::__construct([
             'name' => 'UpdateProfileInput',
             'fields' => [
