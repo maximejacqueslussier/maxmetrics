@@ -1,0 +1,16 @@
+services:
+  php:
+    build:
+      context: ./backend
+      target: frankenphp_dev
+    volumes:
+      - ./backend:/app
+      - ./backend/docker/frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
+      - ./backend/docker/frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
+      - /app/var/cache
+      - /app/var/share
+    environment:
+      FRANKENPHP_WORKER_CONFIG: watch
+      FRANKENPHP_SITE_CONFIG: hot_reload
+      APP_ENV: "${APP_ENV:-dev}"
+    tty: true

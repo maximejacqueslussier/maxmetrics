@@ -1,0 +1,5 @@
+services:
+  php:
+    build:
+      context: ./backend
+      target: frankenphp_prod

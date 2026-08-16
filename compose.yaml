@@ -1,0 +1,61 @@
+services:
+  php:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      APP_SECRET: ${APP_SECRET}
+      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
+      DEFAULT_URI: https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-maxmetrics}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB:-maxmetrics}?serverVersion=${POSTGRES_VERSION:-18}&charset=${POSTGRES_CHARSET:-utf8}
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - name: http
+        target: 80
+        published: ${HTTP_PORT:-80}
+        protocol: tcp
+      - name: https
+        target: 443
+        published: ${HTTPS_PORT:-443}
+        protocol: tcp
+      - name: http3
+        target: 443
+        published: ${HTTP3_PORT:-443}
+        protocol: udp
+    networks:
+      - maxmetrics
+
+  database:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-maxmetrics}
+      POSTGRES_USER: ${POSTGRES_USER:-maxmetrics}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-maxmetrics} -d ${POSTGRES_DB:-maxmetrics}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - database_data:/var/lib/postgresql
+    networks:
+      - maxmetrics
+
+networks:
+  maxmetrics:
+
+volumes:
+  caddy_data:
+  caddy_config:
+  database_data:
