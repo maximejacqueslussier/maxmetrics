@@ -62,7 +62,8 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd"
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "lint": "phpcs src/ tests/",
         "test": "phpunit",
@@ -79,6 +80,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
+            "docker": true,
             "require": "7.4.*"
         }
     },
