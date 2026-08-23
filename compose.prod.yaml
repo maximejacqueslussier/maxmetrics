@@ -1,5 +1,10 @@
 services:
-  php:
+  frontend:
     build:
-      context: ./backend
+      target: prod
+      args:
+        VITE_MAXMETRICS_API_URL: https://${BACKEND_SERVER_NAME:-api.maxmetrics.ca}
+
+  backend:
+    build:
       target: frankenphp_prod

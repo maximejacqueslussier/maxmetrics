@@ -1,17 +1,30 @@
+x-backend-environment: &backend-environment
+  APP_ENV: prod
+  APP_SECRET: ${APP_SECRET:?Set APP_SECRET in your environment file}
+  DATABASE_URL: postgresql://${POSTGRES_USER:-maxmetrics}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your environment file}@database:5432/${POSTGRES_DB:-maxmetrics}?serverVersion=${POSTGRES_VERSION:-18}&charset=${POSTGRES_CHARSET:-utf8}
+  DEFAULT_URI: https://${BACKEND_SERVER_NAME:-api.maxmetrics.ca}
+  FRONTEND_ORIGIN: https://${FRONTEND_SERVER_NAME:-www.maxmetrics.ca}
+  JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in your environment file}
+  JWT_AUDIENCE: ${FRONTEND_SERVER_NAME:-www.maxmetrics.ca}
+
 services:
-  php:
-    build:
-      context: ./backend
+  gateway:
+    image: caddy:2-alpine
     restart: unless-stopped
     environment:
-      APP_SECRET: ${APP_SECRET}
-      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
-      DEFAULT_URI: https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-maxmetrics}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB:-maxmetrics}?serverVersion=${POSTGRES_VERSION:-18}&charset=${POSTGRES_CHARSET:-utf8}
+      BACKEND_SERVER_NAME: ${BACKEND_SERVER_NAME:-api.maxmetrics.ca}
+      BACKEND_UPSTREAM: backend:8080
+      CADDY_GLOBAL_OPTIONS: email ${ACME_EMAIL:-admin@maxmetrics.ca}
+      FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME:-www.maxmetrics.ca}
+      FRONTEND_UPSTREAM: frontend:80
+      TLS_DIRECTIVE: ""
     depends_on:
-      database:
+      backend:
+        condition: service_healthy
+      frontend:
         condition: service_healthy
     volumes:
+      - ./docker/gateway/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     ports:
@@ -27,8 +40,66 @@ services:
         target: 443
         published: ${HTTP3_PORT:-443}
         protocol: udp
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:2019/config/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
-      - maxmetrics
+      - app
+
+  frontend:
+    image: maxmetrics-frontend:prod
+    build:
+      context: ./frontend
+      target: prod
+      args:
+        VITE_MAXMETRICS_API_URL: https://${BACKEND_SERVER_NAME:-api.maxmetrics.ca}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app
+
+  backend:
+    image: maxmetrics-backend:prod
+    build:
+      context: ./backend
+      target: frankenphp_prod
+    restart: unless-stopped
+    environment: *backend-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          php -r '$$context = stream_context_create(["http" => ["method" => "OPTIONS"]]);
+          exit(false === @file_get_contents("http://127.0.0.1:8080/graphql", false, $$context) ? 1 : 0);'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - app
+      - data
+
+  migrate:
+    image: maxmetrics-backend:prod
+    environment: *backend-environment
+    command: ["php", "bin/console", "doctrine:migrations:migrate", "--no-interaction", "--all-or-nothing"]
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - data
 
   database:
     image: postgres:18
@@ -36,13 +107,9 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-maxmetrics}
       POSTGRES_USER: ${POSTGRES_USER:-maxmetrics}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your environment file}
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-maxmetrics} -d ${POSTGRES_DB:-maxmetrics}"
-        ]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-maxmetrics} -d ${POSTGRES_DB:-maxmetrics}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,10 +117,12 @@ services:
     volumes:
       - database_data:/var/lib/postgresql
     networks:
-      - maxmetrics
+      - data
 
 networks:
-  maxmetrics:
+  app:
+  data:
+    internal: true
 
 volumes:
   caddy_data:
