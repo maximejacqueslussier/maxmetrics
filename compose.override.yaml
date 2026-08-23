@@ -3,6 +3,7 @@ services:
     environment:
       BACKEND_SERVER_NAME: ${BACKEND_SERVER_NAME:-api.maxmetrics.local}
       CADDY_GLOBAL_OPTIONS: debug
+      FRONTEND_HEALTH_URL: http://frontend:5173/
       FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
       FRONTEND_UPSTREAM: frontend:5173
       TLS_DIRECTIVE: tls internal

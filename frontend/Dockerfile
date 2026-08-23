@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-alpine AS base
+FROM node:24.19.0-alpine AS base
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ ENV VITE_MAXMETRICS_API_URL=$VITE_MAXMETRICS_API_URL
 COPY . .
 RUN npm run build
 
-FROM caddy:2-alpine AS prod
+FROM caddy:2.11.4-alpine AS prod
 
 COPY docker/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/dist /srv

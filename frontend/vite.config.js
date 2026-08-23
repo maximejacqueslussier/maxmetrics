@@ -8,6 +8,7 @@ export default defineConfig({
     ],
     server: {
         allowedHosts: [
+            'frontend',
             'www.maxmetrics.local',
         ],
     },
