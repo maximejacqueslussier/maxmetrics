@@ -7,11 +7,8 @@ export default defineConfig({
         react(),
     ],
     server: {
-        proxy: {
-            '/graphql': {
-                target: 'http://localhost:8000',
-                changeOrigin: true,
-            },
-        },
+        allowedHosts: [
+            'www.maxmetrics.local',
+        ],
     },
 })
