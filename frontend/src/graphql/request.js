@@ -9,7 +9,9 @@ export async function graphQLRequest(query, variables = {}, accessToken = null) 
         headers.Authorization = `Bearer ${accessToken}`
     }
 
-    const response = await fetch('/graphql', {
+    const graphqlUrl = `${import.meta.env.VITE_MAXMETRICS_API_URL}/graphql`
+
+    const response = await fetch(graphqlUrl, {
         method: 'POST',
         credentials: 'include',
         headers,

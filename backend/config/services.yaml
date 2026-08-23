@@ -44,6 +44,10 @@ services:
         arguments:
             $refreshTokenTtl: '%env(REFRESH_TOKEN_TTL)%'
 
+    App\EventSubscriber\CorsSubscriber:
+        arguments:
+            $corsAllowOrigin: '%env(FRONTEND_ORIGIN)%'
+
     App\GraphQL\Error\ExceptionMapErrorFormatter:
         arguments:
             $map: '%app.graphql.error_map%'

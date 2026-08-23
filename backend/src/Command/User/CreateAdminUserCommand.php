@@ -11,7 +11,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
 
-use function array_pad;
+use function array_pop;
+use function array_shift;
 use function preg_split;
 use function sprintf;
 
@@ -41,7 +42,9 @@ final readonly class CreateAdminUserCommand
         );
 
         $names = preg_split('/\s+/', trim($fullName));
-        [$firstName, $middleName, $lastName] = array_pad($names, 3, null);
+        $firstName = array_shift($names);
+        $lastName = array_pop($names);
+        $middleName = $names !== [] ? implode(' ', $names) : null;
 
         try {
             $adminUser = $this->createUser->execute(

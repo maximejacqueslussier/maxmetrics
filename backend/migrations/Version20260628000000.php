@@ -16,8 +16,8 @@ final class Version20260628000000 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_USER_USERNAME ON user (username)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_USER_EMAIL ON user (email)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_USER_USERNAME ON "user" (username)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_USER_EMAIL ON "user" (email)');
     }
 
     public function down(Schema $schema): void

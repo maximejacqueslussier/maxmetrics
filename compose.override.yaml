@@ -1,0 +1,47 @@
+services:
+  gateway:
+    environment:
+      BACKEND_SERVER_NAME: ${BACKEND_SERVER_NAME:-api.maxmetrics.local}
+      CADDY_GLOBAL_OPTIONS: debug
+      FRONTEND_HEALTH_URL: http://frontend:5173/
+      FRONTEND_SERVER_NAME: ${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
+      FRONTEND_UPSTREAM: frontend:5173
+      TLS_DIRECTIVE: tls internal
+
+  frontend:
+    image: maxmetrics-frontend:dev
+    build:
+      target: dev
+    environment:
+      VITE_MAXMETRICS_API_URL: https://${BACKEND_SERVER_NAME:-api.maxmetrics.local}
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:5173/"]
+
+  backend:
+    image: maxmetrics-backend:dev
+    build:
+      target: frankenphp_dev
+    environment:
+      APP_ENV: ${APP_ENV:-dev}
+      DEFAULT_URI: https://${BACKEND_SERVER_NAME:-api.maxmetrics.local}
+      FRONTEND_ORIGIN: https://${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
+      JWT_AUDIENCE: ${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
+    volumes: &backend-dev-volumes
+      - ./backend:/app
+      - ./backend/docker/frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
+      - ./backend/docker/frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
+      - /app/var/cache
+      - /app/var/share
+    tty: true
+
+  migrate:
+    image: maxmetrics-backend:dev
+    environment:
+      APP_ENV: ${APP_ENV:-dev}
+      DEFAULT_URI: https://${BACKEND_SERVER_NAME:-api.maxmetrics.local}
+      FRONTEND_ORIGIN: https://${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
+      JWT_AUDIENCE: ${FRONTEND_SERVER_NAME:-www.maxmetrics.local}
+    volumes: *backend-dev-volumes
